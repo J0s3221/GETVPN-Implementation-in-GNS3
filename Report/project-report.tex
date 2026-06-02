@@ -159,8 +159,6 @@
 
 Group Encrypted Transport VPN (GETVPN) is a Cisco proprietary technology designed to provide scalable, any-to-any encrypted communication over private WAN infrastructures such as MPLS networks. Unlike traditional point-to-point IPSec VPNs, which require a dedicated tunnel between each pair of sites, GETVPN operates on a group key model: all participating routers share the same encryption keys and policy, allowing any member to securely communicate with any other member without the overhead of per-pair tunnel establishment.
 
-A key architectural feature of GETVPN is \textit{header preservation}: the original source and destination IP addresses of packets are kept intact during encryption, which means that routing continues to work normally and QoS policies applied at the network level remain effective. This makes GETVPN particularly well suited for enterprises that already operate a trusted private WAN and wish to add encryption without redesigning their routing or traffic engineering infrastructure.
-
 The GETVPN architecture is built around two roles. The \textbf{Key Server (KS)} is responsible for generating and distributing cryptographic keys and security policies to all group participants. The \textbf{Group Members (GMs)} are the routers that register with the Key Server, receive the shared keys and traffic policies, and then encrypt or decrypt data traffic autonomously. Once registered, GMs communicate directly with each other; the Key Server is not involved in the data plane.
 
 The goal of this project is to deploy and study a GETVPN solution in a simulated environment using GNS3, analyse the key management protocol exchanges, observe traffic encryption behaviour, and extend the base configuration with additional features. The remainder of this report describes the topology, the configuration steps, the observations made during the lab tasks, and the extensions implemented.
@@ -297,23 +295,21 @@ After all GMs were configured, the \texttt{show crypto gdoi} and \texttt{show cr
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\linewidth]{../Images/sh crypto gdoi ks.png}
+    \includegraphics[width=0.65\linewidth]{../Images/sh crypto gdoi ks.png}
     \caption{\texttt{show crypto gdoi} on the Key Server (R1). Three Group Members registered.}
     \label{fig:ks_gdoi}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{0.85\linewidth}
+    \begin{subfigure}[t]{0.65\linewidth}
         \centering
         \includegraphics[width=\linewidth]{../Images/sh member ks p1.png}
-        \caption{Members output -- part 1}
     \end{subfigure}
     \vspace{0.5em}
-    \begin{subfigure}[t]{0.85\linewidth}
+    \begin{subfigure}[t]{0.65\linewidth}
         \centering
         \includegraphics[width=\linewidth]{../Images/sh members ks p2.png}
-        \caption{Members output -- part 2}
     \end{subfigure}
     \caption{\texttt{show crypto gdoi ks members} on R1. All three GMs (\texttt{192.168.1.2}, \texttt{.3}, \texttt{.4}) show \texttt{GM State: Registered}.}
     \label{fig:ks_members}
@@ -325,32 +321,30 @@ The output confirms that all three GMs successfully completed the GROUPKEY-PULL 
 
 The \texttt{show crypto gdoi} and \texttt{show crypto gdoi ipsec sa} commands were run on R2 as a representative Group Member.
 
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[t]{0.85\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{../Images/sh crypto gdoi gm p1.png}
-        \caption{GM output -- part 1}
-    \end{subfigure}
-    \vspace{0.5em}
-    \begin{subfigure}[t]{0.85\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{../Images/sh crypto gdoi gm p2.png}
-        \caption{GM output -- part 2}
-    \end{subfigure}
-    \caption{\texttt{show crypto gdoi} on R2. Registration confirmed; TEK and KEK policies downloaded from KS.}
-    \label{fig:gm_gdoi}
-\end{figure}
-
-Several important aspects of GETVPN operation are visible in this output:
+Several important aspects of GETVPN operation are visible in the output from Figure~\ref{fig:gm_gdoi}:
 
 \begin{itemize}
     \item \textbf{Registration status}: R2 shows \texttt{Registration status: Registered}, confirming it successfully joined the group.
     \item \textbf{ACL received from KS}: The traffic selector (\texttt{permit icmp any any}) was pushed by the KS and installed on R2 as \texttt{gdoi\_group\_myGDOIGroup\_temp\_acl}. GMs do not define this locally.
-    \item \textbf{TEK policy}: The Traffic Encryption Key policy shows \texttt{transform: esp-aes esp-sha-hmac} and SPI \texttt{0x6D2F03B9}, with a remaining lifetime of 3478 seconds. This is the key used to encrypt ICMP traffic between GMs.
+    \item \textbf{TEK policy}: The Traffic Encryption Key policy shows \texttt{transform:esp-aes esp-sha-hmac} and SPI \texttt{0x6D2F03B9}, with a remaining lifetime of 3478 seconds. This is the key used to encrypt ICMP traffic between GMs.
     \item \textbf{KEK policy}: The Key Encryption Key uses 3DES with a lifetime of 86276 seconds and is used to protect future rekey messages from the KS. Notably, the KEK uses 3DES regardless of the AES algorithm specified in the IKE policy; this is a known behaviour in the IOS version used.
     \item \textbf{Active TEK Number: 1}: Confirms one TEK is active and ready to encrypt matching traffic.
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.65\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh crypto gdoi gm p1.png}
+    \end{subfigure}
+    \vspace{0.5em}
+    \begin{subfigure}[t]{0.65\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh crypto gdoi gm p2.png}
+    \end{subfigure}
+    \caption{\texttt{show crypto gdoi} on R2. Registration confirmed; TEK and KEK policies downloaded from KS.}
+    \label{fig:gm_gdoi}
+\end{figure}
 
 % ======================================================================
 \section{Lab Tasks}
