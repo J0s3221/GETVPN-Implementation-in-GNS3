@@ -86,10 +86,6 @@
     \titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
     \fancyfoot[C]{\thepage}
 
-% Random text (not needed)
-\usepackage{lipsum}
-\usepackage{duckuments}
-
 % New and re-newcommands
 \newcommand{\sen}{\operatorname{\sen}} % Sine function definition
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Specific rule definition
@@ -144,37 +140,281 @@
 \end{center}
 
 \thispagestyle{empty}
-
 \setcounter{page}{0}
-
 \newpage
 
 % ----------------------------------------------------------------------
 % Contents
 % ----------------------------------------------------------------------
 \tableofcontents 
-
 \newpage
 
 % ----------------------------------------------------------------------
 % Body
 % ----------------------------------------------------------------------
 
+% ======================================================================
 \section{Introduction}
+% ======================================================================
 
-This is my first \LaTeX{} report.
+Group Encrypted Transport VPN (GETVPN) is a Cisco proprietary technology designed to provide scalable, any-to-any encrypted communication over private WAN infrastructures such as MPLS networks. Unlike traditional point-to-point IPSec VPNs, which require a dedicated tunnel between each pair of sites, GETVPN operates on a group key model: all participating routers share the same encryption keys and policy, allowing any member to securely communicate with any other member without the overhead of per-pair tunnel establishment.
 
-\section{Topology and basic configurations}
+A key architectural feature of GETVPN is \textit{header preservation}: the original source and destination IP addresses of packets are kept intact during encryption, which means that routing continues to work normally and QoS policies applied at the network level remain effective. This makes GETVPN particularly well suited for enterprises that already operate a trusted private WAN and wish to add encryption without redesigning their routing or traffic engineering infrastructure.
 
-Section to explain the projects topology briefly and to mention the use of routers cisco 3275 as pcs (changed the icon in gns3 to a pc icon)
+The GETVPN architecture is built around two roles. The \textbf{Key Server (KS)} is responsible for generating and distributing cryptographic keys and security policies to all group participants. The \textbf{Group Members (GMs)} are the routers that register with the Key Server, receive the shared keys and traffic policies, and then encrypt or decrypt data traffic autonomously. Once registered, GMs communicate directly with each other; the Key Server is not involved in the data plane.
+
+The goal of this project is to deploy and study a GETVPN solution in a simulated environment using GNS3, analyse the key management protocol exchanges, observe traffic encryption behaviour, and extend the base configuration with additional features. The remainder of this report describes the topology, the configuration steps, the observations made during the lab tasks, and the extensions implemented.
+
+% ======================================================================
+\section{Topology and Base Configuration}
+% ======================================================================
+
+The network topology used in this project is shown in Figure~\ref{fig:topology}. It consists of four Cisco IOSv routers interconnected through a central switch. Router R1 acts as the Key Server and is connected to the shared segment \texttt{192.168.1.0/24} with address \texttt{192.168.1.254}. Routers R2, R3, and R4 are the Group Members, with addresses \texttt{192.168.1.2}, \texttt{192.168.1.3}, and \texttt{192.168.1.4} respectively on their \texttt{gi0/0} interfaces. Each Group Member also has a LAN-facing interface (\texttt{gi0/1}) connecting to a dedicated subnet: R2 serves \texttt{192.168.10.0/24}, R3 serves \texttt{192.168.20.0/24}, and R4 serves \texttt{192.168.30.0/24}.
+
+Three end hosts (PC1, PC2, PC3) are attached to these LAN subnets. Since the lab environment does not include dedicated PC images, Cisco 3725 routers were used to simulate the hosts; IP routing was disabled on these devices (\texttt{no ip routing}), and a default gateway static route was configured on each to point to the respective Group Member. Each simulated PC was assigned the \texttt{.100} address of its subnet (e.g., PC1 at \texttt{192.168.10.100}) and its icon was changed to a PC in GNS3 for clarity.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.65\linewidth]{../Images/Project Topology.png}
-    \caption{Project topology, group members and Key server highlighted}
+    \includegraphics[width=0.75\linewidth]{../Images/Project Topology.png}
+    \caption{Project topology. R1 is the Key Server; R2, R3, and R4 are Group Members.}
     \label{fig:topology}
 \end{figure}
 
+OSPF was chosen as the routing protocol and was configured on all four routers to advertise all connected networks. Prior to applying any GETVPN or IPSec configuration, end-to-end reachability was verified by pinging between all three PCs and between all router interfaces. All pings were successful, confirming that the routing layer was fully operational before any security configuration was introduced.
+
+% ======================================================================
+\section{GETVPN Configuration}
+% ======================================================================
+
+\subsection{Overview of the Configuration Model}
+
+GETVPN security configuration is divided between the Key Server and the Group Members. The Key Server defines all security policy — the IKE parameters, the cryptographic algorithms, the traffic selector (which packets to encrypt), and the keys themselves — and distributes this policy to GMs during their registration. GMs only need to know how to authenticate with the KS and where to register; they receive everything else from the KS automatically.
+
+The key management protocol used to distribute keys and policy is \textbf{GDOI (Group Domain of Interpretation)}, which runs over UDP port 848. The registration process has two phases: an IKE Phase 1 exchange that establishes a secure authenticated channel between the GM and the KS, followed by a \textbf{GROUPKEY-PULL} exchange in which the GM requests and receives the group keys and IPSec policy.
+
+\subsection{Key Server Configuration (R1)}
+
+\subsubsection{IKE Phase 1 Policy}
+
+The first step is to define the parameters for the IKE Phase 1 exchange that will protect the GDOI registration channel between each GM and the KS. AES encryption, SHA hashing, pre-shared key authentication, and Diffie-Hellman group 5 are used. The wildcard address \texttt{0.0.0.0} allows the KS to accept registrations from any GM without listing each one individually.
+
+\begin{configbox}
+! IKE Phase 1
+R1(config)#crypto isakmp policy 10
+R1(config-isakmp)#encryption aes
+R1(config-isakmp)#hash sha
+R1(config-isakmp)#authentication pre-share
+R1(config-isakmp)#group 5
+R1(config)#crypto isakmp key saar address 0.0.0.0
+\end{configbox}
+
+\subsubsection{Transform Set and IPSec Profile}
+
+The \textit{transform set} defines the cryptographic algorithms that will be applied to data traffic: ESP with AES for encryption and SHA-HMAC for integrity. The \textit{IPSec profile} bundles the transform set into a named object that is later referenced inside the GDOI group configuration.
+
+\begin{configbox}
+! Transform set (cipher suite for data traffic)
+R1(config)#crypto ipsec transform-set myTSet esp-aes esp-sha-hmac
+
+! IPSec profile (references the transform set)
+R1(config)#crypto ipsec profile myIPSecProfile
+R1(ipsec-profile)#set transform-set myTSet
+\end{configbox}
+
+\subsubsection{RSA Key Pair}
+
+The KS signs its rekey messages using an RSA key pair so that GMs can verify the authenticity and integrity of key updates. The label \texttt{myRSAKeys} is used to reference this key pair in the GDOI group configuration.
+
+\begin{configbox}
+R1(config)#crypto key generate rsa modulus 1024 label myRSAKeys
+\end{configbox}
+
+\subsubsection{Traffic Selector ACL}
+
+GETVPN does not encrypt all traffic indiscriminately. An extended ACL defines the \textit{interesting traffic} — the flows that should be protected. This ACL is configured on the KS and pushed to all GMs during registration. In this lab, only ICMP traffic is protected, which is sufficient for the ping-based verification tasks.
+
+\begin{configbox}
+! Interesting traffic (what gets encrypted)
+R1(config)#ip access-list extended ICMP
+R1(config-ext-nacl)#permit icmp any any
+\end{configbox}
+
+\subsubsection{GDOI Group}
+
+The GDOI group is the central object of the KS configuration. It ties together the identity number (which GMs must match to join the group), the KS address, the rekey mechanism, and the IPSec SA policy including the traffic selector.
+
+\begin{configbox}
+R1(config)#crypto gdoi group myGDOIGroup
+R1(config-gkm-group)#identity number 123
+R1(config-gkm-group)#server local
+R1(gkm-local-server)#address ipv4 192.168.1.254
+R1(gkm-local-server)#rekey authentication mypubkey rsa myRSAKeys
+R1(gkm-local-server)#rekey transport unicast
+R1(gkm-local-server)#sa ipsec 10
+R1(gkm-sa-ipsec)#profile myIPSecProfile
+R1(gkm-sa-ipsec)#match address ipv4 ICMP
+\end{configbox}
+
+The \texttt{rekey transport unicast} directive instructs the KS to send key refresh messages directly to each registered GM individually, as opposed to multicast delivery.
+
+\subsection{Group Member Configuration (R2, R3, R4)}
+
+The configuration is identical on all three GMs; only the hostname differs. Each GM configures the same IKE Phase 1 parameters and pre-shared key as the KS, joins the GDOI group by its identity number and the KS address, and applies a crypto map to its WAN-facing interface to activate the received policy.
+
+\begin{configbox}
+! IKE Phase 1 (must match KS policy)
+Rx(config)#crypto isakmp policy 10
+Rx(config-isakmp)#encryption aes
+Rx(config-isakmp)#hash sha
+Rx(config-isakmp)#authentication pre-share
+Rx(config-isakmp)#group 5
+Rx(config)#crypto isakmp key saar address 192.168.1.254
+
+! Transform set (required locally, actual policy comes from KS)
+Rx(config)#crypto ipsec transform-set TRANSFORM_SET esp-aes esp-sha-hmac
+
+! GDOI group (must match KS identity number)
+Rx(config)#crypto gdoi group myGDOIGroup
+Rx(config-gkm-group)#identity number 123
+Rx(config-gkm-group)#server address ipv4 192.168.1.254
+
+! Crypto map applied to WAN interface
+Rx(config)#crypto map myCryptoMap 10 gdoi
+Rx(config-crypto-map)#set group myGDOIGroup
+Rx(config)#interface gi0/0
+Rx(config-if)#crypto map myCryptoMap
+\end{configbox}
+
+It is worth noting that the transform set defined locally on a GM is not used for data traffic; the actual IPSec policy (including transform set, traffic selector, and keys) is always received from the KS. The local transform set is only relevant for the IKE Phase 1 exchange during registration.
+
+% ======================================================================
+\section{Verification}
+% ======================================================================
+
+\subsection{Key Server Status}
+
+After all GMs were configured, the \texttt{show crypto gdoi} and \texttt{show crypto gdoi ks members} commands were used on R1 to confirm correct operation.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/sh crypto gdoi ks.png}
+    \caption{\texttt{show crypto gdoi} on the Key Server (R1). Three Group Members registered.}
+    \label{fig:ks_gdoi}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.85\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh member ks p1.png}
+        \caption{Members output -- part 1}
+    \end{subfigure}
+    \vspace{0.5em}
+    \begin{subfigure}[t]{0.85\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh members ks p2.png}
+        \caption{Members output -- part 2}
+    \end{subfigure}
+    \caption{\texttt{show crypto gdoi ks members} on R1. All three GMs (\texttt{192.168.1.2}, \texttt{.3}, \texttt{.4}) show \texttt{GM State: Registered}.}
+    \label{fig:ks_members}
+\end{figure}
+
+The output confirms that all three GMs successfully completed the GROUPKEY-PULL exchange. Each entry shows \texttt{GM State: Registered} and identifies the correct Key Server address (\texttt{192.168.1.254}). The rekey counters are all zero, which is expected since no TEK refresh has occurred yet.
+
+\subsection{Group Member Status}
+
+The \texttt{show crypto gdoi} and \texttt{show crypto gdoi ipsec sa} commands were run on R2 as a representative Group Member.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.85\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh crypto gdoi gm p1.png}
+        \caption{GM output -- part 1}
+    \end{subfigure}
+    \vspace{0.5em}
+    \begin{subfigure}[t]{0.85\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh crypto gdoi gm p2.png}
+        \caption{GM output -- part 2}
+    \end{subfigure}
+    \caption{\texttt{show crypto gdoi} on R2. Registration confirmed; TEK and KEK policies downloaded from KS.}
+    \label{fig:gm_gdoi}
+\end{figure}
+
+Several important aspects of GETVPN operation are visible in this output:
+
+\begin{itemize}
+    \item \textbf{Registration status}: R2 shows \texttt{Registration status: Registered}, confirming it successfully joined the group.
+    \item \textbf{ACL received from KS}: The traffic selector (\texttt{permit icmp any any}) was pushed by the KS and installed on R2 as \texttt{gdoi\_group\_myGDOIGroup\_temp\_acl}. GMs do not define this locally.
+    \item \textbf{TEK policy}: The Traffic Encryption Key policy shows \texttt{transform: esp-aes esp-sha-hmac} and SPI \texttt{0x6D2F03B9}, with a remaining lifetime of 3478 seconds. This is the key used to encrypt ICMP traffic between GMs.
+    \item \textbf{KEK policy}: The Key Encryption Key uses 3DES with a lifetime of 86276 seconds and is used to protect future rekey messages from the KS. Notably, the KEK uses 3DES regardless of the AES algorithm specified in the IKE policy; this is a known behaviour in the IOS version used.
+    \item \textbf{Active TEK Number: 1}: Confirms one TEK is active and ready to encrypt matching traffic.
+\end{itemize}
+
+% ======================================================================
+\section{Lab Tasks}
+% ======================================================================
+
+% --- Task 1 ---
+\subsection{IKE and GROUPKEY-PULL Analysis (Wireshark)}
+
+% TODO: Insert Wireshark screenshots and analysis.
+% 
+% Points to address:
+%   - Place Wireshark probe on link between KS and switch, capture on router restart.
+%   - Use "Decode As > ISAKMP" for UDP port 848 traffic.
+%   - Identify IKE Phase 1 messages (Main Mode or Aggressive Mode exchanges).
+%   - Identify GROUPKEY-PULL messages (GM request + KS response containing TEK/KEK).
+%   - Explain the role of each set of messages:
+%       IKE Phase 1: mutual authentication and establishment of a secure channel.
+%       GROUPKEY-PULL: GM joins the group and downloads keys and IPSec policy from KS.
+
+\subsection{SPI Consistency Across Group Members}
+
+% TODO: Insert ping captures and SPI verification.
+%
+% Points to address:
+%   - Ping from PC1 to PC3 and PC1 to PC2, capture at R2 <-> switch link.
+%   - Show that all ESP packets share the same SPI (0x6D2F03B9).
+%   - Explain why: all GMs share one TEK, so the same SPI is used regardless of destination.
+%   - Confirm with: show crypto ipsec sa | include spi  (on each GM)
+%   - Confirm TEK policy at KS with: show crypto gdoi ks policy
+
+\subsection{TEK Rekey Observation}
+
+% TODO: Insert rekey Wireshark capture and console output.
+%
+% Points to address:
+%   - Add to KS ipsec profile: set security-association lifetime seconds 900
+%   - Restart KS. Use show crypto gdoi to find time-to-rekey.
+%   - When rekey fires: KS console notification, ISAKMP messages sent to each GM.
+%   - Identify Exchange Type of rekey messages (GDOI Rekey, type 35).
+%   - What changed: new TEK SPI distributed to all GMs; old one expires shortly after.
+
+% ======================================================================
+\section{GETVPN Extensions}
+% ======================================================================
+
+% TODO: Fill in after implementing extensions from Section 5 of the lab guide.
+%
+% Candidate extensions (choose one or more):
+%   - Redundant Key Servers
+%   - RSA signature-based authentication (instead of pre-shared key)
+%   - VRF-aware GETVPN
+%   - GETVPN for IPv6
+
+% ======================================================================
 \section{Conclusion}
+% ======================================================================
+
+% TODO: Write after completing all tasks and extensions.
+%
+% Points to cover:
+%   - What GETVPN offers over traditional point-to-point IPSec VPNs.
+%   - The role of GDOI and the two-phase registration process.
+%   - The significance of the shared TEK (same SPI on all GMs).
+%   - Observations from the rekey process.
+%   - Summary of any extensions implemented and what they add.
 
 \end{document}
