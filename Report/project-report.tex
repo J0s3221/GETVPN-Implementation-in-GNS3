@@ -570,14 +570,105 @@ TEK to all GMs before the old one expires — is examined in the following task.
 
 \subsection{TEK Rekey Observation}
 
-% TODO: Insert rekey Wireshark capture and console output.
-%
-% Points to address:
-%   - Add to KS ipsec profile: set security-association lifetime seconds 900
-%   - Restart KS. Use show crypto gdoi to find time-to-rekey.
-%   - When rekey fires: KS console notification, ISAKMP messages sent to each GM.
-%   - Identify Exchange Type of rekey messages (GDOI Rekey, type 35).
-%   - What changed: new TEK SPI distributed to all GMs; old one expires shortly after.
+To observe the TEK refresh process, the IPSec SA lifetime on the Key Server was 
+reduced to 900 seconds by adding the following command to the IPSec profile:
+
+\begin{configbox}
+R1(config)#crypto ipsec profile myIPSecProfile
+R1(ipsec-profile)#set security-association lifetime seconds 900
+\end{configbox}
+
+Rather than waiting for the timer to expire naturally, the rekey was triggered 
+immediately using the command \texttt{crypto gdoi ks rekey} like shown in the Figure~\ref{fig:forcerekey}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.05\linewidth]{../Images/crypto gdoi ks rekey.png}
+    \caption{Output of the command \texttt{crypto gdoi ks rekey} in R1}
+    \label{fig:forcerekey}
+\end{figure}
+
+Figure~\ref{fig:rekey_timer} confirms that the 900 second lifetime was active 
+at the time, with the SA showing a remaining lifetime of 893 seconds and a 
+time to rekey of 777 seconds — well within the configured bound and counting 
+down as expected.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\linewidth]{../Images/time to rekey proof.png}
+    \caption{\texttt{show crypto gdoi} on R1 showing the 900 second TEK 
+    lifetime in effect after to the manual rekey.}
+    \label{fig:rekey_timer}
+\end{figure}
+
+\subsubsection{Rekey Messages in Wireshark}
+
+Figure~\ref{fig:rekey_wireshark} shows the Wireshark capture taken at the 
+R1-switch link at the moment the rekey was triggered. Six ISAKMP messages appear 
+in quick succession: three rekey messages from the KS to each GM (packets 47, 
+49, 51) and three acknowledgements from the GMs back to the KS (packets 48, 50, 
+52).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/rekey wireshark.png}
+    \caption{Wireshark capture of the rekey event. Three unicast rekey messages 
+    from R1 (\texttt{192.168.1.254}) to each GM, followed by acknowledgements.}
+    \label{fig:rekey_wireshark}
+\end{figure}
+
+\subsubsection{Exchange Type}
+
+Expanding packet 51 (Figure~\ref{fig:rekey_wireshark}) reveals 
+\texttt{Exchange type: New Group Mode (33)}. This differs from both the IKE 
+Phase 1 exchange (Main Mode, type 2) and the initial GROUPKEY-PULL (Quick Mode, 
+type 32). New Group Mode (type 33) is the GDOI-specific exchange used 
+exclusively for pushing refreshed key material from a KS to already-registered 
+GMs. The acknowledgement messages use exchange type 34. The direction of 
+the exchange is also reversed compared to GROUPKEY-PULL: here the KS initiates 
+by pushing the new TEK to GMs, rather than GMs pulling from the KS.
+
+All three rekey messages share \texttt{Message ID: 0x00000000}, which is the 
+fixed message ID used for GDOI rekey messages. Each packet carries 704 bytes of 
+encrypted data — larger than the original GROUPKEY-PULL responses — as the 
+payload includes the new TEK, updated policy parameters, and the RSA signature 
+used by GMs to verify the authenticity of the rekey message. Since 
+\texttt{rekey transport unicast} was configured, the KS sends one independent 
+message to each GM rather than a single multicast.
+
+\subsubsection{What Changed}
+
+After the rekey completed, the SPI on all GMs changed to a new value, 
+confirming that a new TEK was successfully installed:
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.7\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh crypto ipsec sa R2 after rekey.png}
+    \end{subfigure}
+    \vspace{0.5em}
+    \begin{subfigure}[t]{0.7\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh crypto ipsec sa R3 after rekey.png}
+    \end{subfigure}
+    \vspace{0.5em}
+    \begin{subfigure}[t]{0.7\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh crypto ipsec sa R4 after rekey.png}
+    \end{subfigure}
+    \caption{\texttt{show crypto ipsec sa | include spi} across all Group Members after the rekeying}
+    \label{fig:cryptoipsecR2rekey}
+    \label{fig:cryptoipsecR3rekey}
+    \label{fig:cryptoipsecR4rekey}
+\end{figure}
+
+The Key Encryption Key (KEK) was not replaced during this event — only the TEK 
+changed. The KEK has a much longer lifetime (86400 seconds) and is used to 
+protect the rekey messages themselves; it is only refreshed on a separate, 
+less frequent schedule. This separation of TEK and KEK lifetimes is a deliberate 
+design choice in GETVPN: TEKs rotate frequently to limit the exposure of any 
+single key, while the KEK rotates less often to reduce management overhead.
 
 % ======================================================================
 \section{GETVPN Extensions}

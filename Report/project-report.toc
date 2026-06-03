@@ -23,5 +23,8 @@
 \contentsline {subsubsection}{\numberline {5.2.2}CLI Verification}{17}{subsubsection.5.2.2}%
 \contentsline {subsubsection}{\numberline {5.2.3}Why All SPIs Are Identical}{18}{subsubsection.5.2.3}%
 \contentsline {subsection}{\numberline {5.3}TEK Rekey Observation}{18}{subsection.5.3}%
-\contentsline {section}{\numberline {6}GETVPN Extensions}{18}{section.6}%
-\contentsline {section}{\numberline {7}Conclusion}{18}{section.7}%
+\contentsline {subsubsection}{\numberline {5.3.1}Rekey Messages in Wireshark}{19}{subsubsection.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.2}Exchange Type}{20}{subsubsection.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.3.3}What Changed}{20}{subsubsection.5.3.3}%
+\contentsline {section}{\numberline {6}GETVPN Extensions}{21}{section.6}%
+\contentsline {section}{\numberline {7}Conclusion}{21}{section.7}%

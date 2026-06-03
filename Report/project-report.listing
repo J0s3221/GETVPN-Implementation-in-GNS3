@@ -1,21 +1,2 @@
-! IKE Phase 1 (must match KS policy)
-Rx(config)#crypto isakmp policy 10
-Rx(config-isakmp)#encryption aes
-Rx(config-isakmp)#hash sha
-Rx(config-isakmp)#authentication pre-share
-Rx(config-isakmp)#group 5
-Rx(config)#crypto isakmp key saar address 192.168.1.254
-
-! Transform set (required locally, actual policy comes from KS)
-Rx(config)#crypto ipsec transform-set TRANSFORM_SET esp-aes esp-sha-hmac
-
-! GDOI group (must match KS identity number)
-Rx(config)#crypto gdoi group myGDOIGroup
-Rx(config-gkm-group)#identity number 123
-Rx(config-gkm-group)#server address ipv4 192.168.1.254
-
-! Crypto map applied to WAN interface
-Rx(config)#crypto map myCryptoMap 10 gdoi
-Rx(config-crypto-map)#set group myGDOIGroup
-Rx(config)#interface gi0/0
-Rx(config-if)#crypto map myCryptoMap
+R1(config)#crypto ipsec profile myIPSecProfile
+R1(ipsec-profile)#set security-association lifetime seconds 900

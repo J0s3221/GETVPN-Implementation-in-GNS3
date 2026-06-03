@@ -78,6 +78,19 @@
 \newlabel{fig:ks_policy}{{15}{18}{\texttt {show crypto gdoi ks policy} on R1 confirming the TEK SPI and policy distributed to all GMs.\relax }{figure.caption.16}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.3}Why All SPIs Are Identical}{18}{subsubsection.5.2.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.3}TEK Rekey Observation}{18}{subsection.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6}GETVPN Extensions}{18}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{18}{section.7}\protected@file@percent }
-\gdef \@abspage@last{19}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Output of the command \texttt  {crypto gdoi ks rekey} in R1\relax }}{19}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:forcerekey}{{16}{19}{Output of the command \texttt {crypto gdoi ks rekey} in R1\relax }{figure.caption.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces \texttt  {show crypto gdoi} on R1 showing the 900 second TEK lifetime in effect after to the manual rekey.\relax }}{19}{figure.caption.18}\protected@file@percent }
+\newlabel{fig:rekey_timer}{{17}{19}{\texttt {show crypto gdoi} on R1 showing the 900 second TEK lifetime in effect after to the manual rekey.\relax }{figure.caption.18}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.1}Rekey Messages in Wireshark}{19}{subsubsection.5.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Wireshark capture of the rekey event. Three unicast rekey messages from R1 (\texttt  {192.168.1.254}) to each GM, followed by acknowledgements.\relax }}{20}{figure.caption.19}\protected@file@percent }
+\newlabel{fig:rekey_wireshark}{{18}{20}{Wireshark capture of the rekey event. Three unicast rekey messages from R1 (\texttt {192.168.1.254}) to each GM, followed by acknowledgements.\relax }{figure.caption.19}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.2}Exchange Type}{20}{subsubsection.5.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.3}What Changed}{20}{subsubsection.5.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces \texttt  {show crypto ipsec sa | include spi} across all Group Members after the rekeying\relax }}{21}{figure.caption.20}\protected@file@percent }
+\newlabel{fig:cryptoipsecR2rekey}{{19}{21}{\texttt {show crypto ipsec sa | include spi} across all Group Members after the rekeying\relax }{figure.caption.20}{}}
+\newlabel{fig:cryptoipsecR3rekey}{{19}{21}{\texttt {show crypto ipsec sa | include spi} across all Group Members after the rekeying\relax }{figure.caption.20}{}}
+\newlabel{fig:cryptoipsecR4rekey}{{19}{21}{\texttt {show crypto ipsec sa | include spi} across all Group Members after the rekeying\relax }{figure.caption.20}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}GETVPN Extensions}{21}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{21}{section.7}\protected@file@percent }
+\gdef \@abspage@last{22}
