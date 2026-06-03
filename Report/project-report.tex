@@ -351,18 +351,129 @@ Several important aspects of GETVPN operation are visible in the output from Fig
 % ======================================================================
 
 % --- Task 1 ---
-\subsection{IKE and GROUPKEY-PULL Analysis (Wireshark)}
+\subsection{IKE and GROUPKEY-PULL Analysis}
 
-% TODO: Insert Wireshark screenshots and analysis.
-% 
-% Points to address:
-%   - Place Wireshark probe on link between KS and switch, capture on router restart.
-%   - Use "Decode As > ISAKMP" for UDP port 848 traffic.
-%   - Identify IKE Phase 1 messages (Main Mode or Aggressive Mode exchanges).
-%   - Identify GROUPKEY-PULL messages (GM request + KS response containing TEK/KEK).
-%   - Explain the role of each set of messages:
-%       IKE Phase 1: mutual authentication and establishment of a secure channel.
-%       GROUPKEY-PULL: GM joins the group and downloads keys and IPSec policy from KS.
+To capture the GDOI registration exchanges, a Wireshark probe was placed on the 
+link between the Key Server (R1) and the central switch before any Group Member 
+was started. R1 was brought up first, followed by R2, R3, and R4 in sequence. 
+The traffic on this link runs on UDP port 848, which Wireshark does not decode 
+automatically. Figure~\ref{fig:udp848raw} shows the raw capture before applying any 
+decoder, with packets appearing as generic UDP. The \textit{Decode As} feature was 
+used to instruct Wireshark to interpret port 848 traffic as ISAKMP, after which 
+the exchange types became readable.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/udp port 848 filter (raw).png}
+    \caption{Capture filtered on UDP port 848 before applying the ISAKMP decoder.}
+    \label{fig:udp848raw}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/udp port 848 filter.png}
+    \caption{Capture filtered on UDP port 848 after applying the ISAKMP decoder.}
+    \label{fig:udp848}
+\end{figure}
+
+\subsubsection{IKE Phase 1 -- Main Mode}
+
+For each Group Member, the capture shows six ISAKMP messages labelled 
+\textit{Identity Protection (Main Mode)} (exchange type 2), constituting the 
+IKE Phase 1 exchange. These six messages serve a single purpose: to establish a 
+mutually authenticated, encrypted channel between the GM and the KS before any 
+key material is exchanged. The three pairs of messages carry out the following 
+steps: the first pair negotiates the SA parameters (encryption algorithm, hash, 
+authentication method, and DH group); the second pair performs the Diffie-Hellman 
+key exchange, from which both sides derive a shared secret; and the third pair 
+carries the encrypted authentication payloads, where each side proves its identity 
+using the pre-shared key \texttt{saar}.
+
+A detail visible in the first message of each registration (Figure~\ref{fig:ike_phase1}) 
+is that the \textit{Responder SPI} field is \texttt{0x0000000000000000}. This is 
+expected: the KS has not yet responded, so no responder cookie has been assigned. 
+By the end of Phase 1, both SPIs are populated, confirming the session is 
+established. Also visible in this first message is the field 
+\textit{Domain of Interpretation: GDOI (2)}, which distinguishes this from a 
+standard IPSec IKE negotiation (DOI 1) and confirms the session is being 
+established specifically to support a GDOI group registration.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/iskamp packet content IKE phase1 .png}
+    \caption{First IKE Phase 1 message expanded. Note the null Responder SPI and 
+    \texttt{Domain of Interpretation: GDOI (2)}.}
+    \label{fig:ike_phase1}
+\end{figure}
+
+\subsubsection{GROUPKEY-PULL}
+
+Immediately following the six Phase 1 messages, four additional ISAKMP messages 
+appear, labelled by Wireshark as \textit{Quick Mode} (exchange type 32). These 
+four messages constitute the \textbf{GROUPKEY-PULL} exchange, through which the 
+GM requests and receives the group keys and IPSec policy from the KS. GDOI reuses 
+the Quick Mode exchange type framing, which is why Wireshark labels them as such; 
+the GDOI nature is confirmed by the DOI field observed in Phase 1.
+
+Figures~\ref{fig:groupkey_p1} and \ref{fig:groupkey_p2} show the four packets. 
+All four share the same Message ID (\texttt{0x64b4a54f}), confirming they belong 
+to the same exchange. The size of each packet is significant: the GM's initial 
+request (packet 48) carries 64 bytes of encrypted data, while the KS responses 
+carry 208 bytes (packet 49) and 320 bytes (packet 51). This asymmetry reflects 
+the nature of the exchange — the GM sends a short registration request, while the 
+KS response contains the full group policy: the Traffic Encryption Key (TEK), 
+the Key Encryption Key (KEK), the traffic selector ACL, and the rekey parameters. 
+All payloads are encrypted under the Phase 1 SA, so the key material itself is 
+not visible in Wireshark. The fourth message (packet 50, 32 bytes) is the GM's 
+acknowledgement completing the exchange.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.95\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/GROUPKEY Pull p1.png}
+    \end{subfigure}
+    \vspace{0.5em}
+    \begin{subfigure}[t]{0.95\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/GROUPKEY Pull p2.png}
+    \end{subfigure}
+    \caption{GROUPKEY-PULL exchange (Quick Mode, exchange type 32) between R2 
+    and the Key Server.}
+    \label{fig:groupkey_p1}
+    \label{fig:groupkey_p2}
+\end{figure}
+
+\subsubsection{Repeated Pattern Across All Group Members}
+
+The identical 10-message pattern (6 Main Mode + 4 Quick Mode) was observed 
+independently for each of the three Group Members, as shown in 
+Figures~\ref{fig:r2_isakmp}, \ref{fig:r3_isakmp}, and \ref{fig:r4_isakmp}. Each 
+GM performs its own IKE Phase 1 and GROUPKEY-PULL with the KS independently. 
+The KS distributes the same TEK and policy to all three, which is what allows 
+any GM to decrypt traffic encrypted by any other GM.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/GM R2 iskamp.png}
+    \caption{10-message registration sequence for R2 (packets 42--51).}
+    \label{fig:r2_isakmp}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/GM R3 iskamp.png}
+    \caption{10-message registration sequence for R3.}
+    \label{fig:r3_isakmp}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/GM R4 iskamp.png}
+    \caption{10-message registration sequence for R4.}
+    \label{fig:r4_isakmp}
+\end{figure}
 
 \subsection{SPI Consistency Across Group Members}
 
