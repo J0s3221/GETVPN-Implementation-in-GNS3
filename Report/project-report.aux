@@ -63,8 +63,21 @@
 \newlabel{fig:r3_isakmp}{{10}{15}{10-message registration sequence for R3.\relax }{figure.caption.11}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces 10-message registration sequence for R4.\relax }}{15}{figure.caption.12}\protected@file@percent }
 \newlabel{fig:r4_isakmp}{{11}{15}{10-message registration sequence for R4.\relax }{figure.caption.12}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}SPI Consistency Across Group Members}{16}{subsection.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}TEK Rekey Observation}{16}{subsection.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6}GETVPN Extensions}{16}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{16}{section.7}\protected@file@percent }
-\gdef \@abspage@last{17}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}SPI Consistency Across Group Members}{15}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.1}Wireshark Capture}{16}{subsubsection.5.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces ESP packets captured for PC1 $\rightarrow $ PC2 ping. All packets carry \texttt  {SPI=0x24FF23B1}.\relax }}{16}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:esp_pc2}{{12}{16}{ESP packets captured for PC1 $\rightarrow $ PC2 ping. All packets carry \texttt {SPI=0x24FF23B1}.\relax }{figure.caption.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces ESP packets captured for PC1 $\rightarrow $ PC3 ping. Same SPI value despite different destination.\relax }}{16}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:esp_pc3}{{13}{16}{ESP packets captured for PC1 $\rightarrow $ PC3 ping. Same SPI value despite different destination.\relax }{figure.caption.14}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2}CLI Verification}{17}{subsubsection.5.2.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces \texttt  {show crypto ipsec sa | include spi} across all Group Members showing that they all have the same SPI\relax }}{17}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:cryptoipsecR2}{{14}{17}{\texttt {show crypto ipsec sa | include spi} across all Group Members showing that they all have the same SPI\relax }{figure.caption.15}{}}
+\newlabel{fig:cryptoipsecR3}{{14}{17}{\texttt {show crypto ipsec sa | include spi} across all Group Members showing that they all have the same SPI\relax }{figure.caption.15}{}}
+\newlabel{fig:cryptoipsecR4}{{14}{17}{\texttt {show crypto ipsec sa | include spi} across all Group Members showing that they all have the same SPI\relax }{figure.caption.15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces \texttt  {show crypto gdoi ks policy} on R1 confirming the TEK SPI and policy distributed to all GMs.\relax }}{18}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:ks_policy}{{15}{18}{\texttt {show crypto gdoi ks policy} on R1 confirming the TEK SPI and policy distributed to all GMs.\relax }{figure.caption.16}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.3}Why All SPIs Are Identical}{18}{subsubsection.5.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}TEK Rekey Observation}{18}{subsection.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}GETVPN Extensions}{18}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{18}{section.7}\protected@file@percent }
+\gdef \@abspage@last{19}

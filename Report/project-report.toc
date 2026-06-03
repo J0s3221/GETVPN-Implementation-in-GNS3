@@ -18,7 +18,10 @@
 \contentsline {subsubsection}{\numberline {5.1.1}IKE Phase 1 -- Main Mode}{12}{subsubsection.5.1.1}%
 \contentsline {subsubsection}{\numberline {5.1.2}GROUPKEY-PULL}{13}{subsubsection.5.1.2}%
 \contentsline {subsubsection}{\numberline {5.1.3}Repeated Pattern Across All Group Members}{15}{subsubsection.5.1.3}%
-\contentsline {subsection}{\numberline {5.2}SPI Consistency Across Group Members}{16}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}TEK Rekey Observation}{16}{subsection.5.3}%
-\contentsline {section}{\numberline {6}GETVPN Extensions}{16}{section.6}%
-\contentsline {section}{\numberline {7}Conclusion}{16}{section.7}%
+\contentsline {subsection}{\numberline {5.2}SPI Consistency Across Group Members}{15}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Wireshark Capture}{16}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}CLI Verification}{17}{subsubsection.5.2.2}%
+\contentsline {subsubsection}{\numberline {5.2.3}Why All SPIs Are Identical}{18}{subsubsection.5.2.3}%
+\contentsline {subsection}{\numberline {5.3}TEK Rekey Observation}{18}{subsection.5.3}%
+\contentsline {section}{\numberline {6}GETVPN Extensions}{18}{section.6}%
+\contentsline {section}{\numberline {7}Conclusion}{18}{section.7}%

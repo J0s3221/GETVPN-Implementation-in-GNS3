@@ -477,14 +477,96 @@ any GM to decrypt traffic encrypted by any other GM.
 
 \subsection{SPI Consistency Across Group Members}
 
-% TODO: Insert ping captures and SPI verification.
-%
-% Points to address:
-%   - Ping from PC1 to PC3 and PC1 to PC2, capture at R2 <-> switch link.
-%   - Show that all ESP packets share the same SPI (0x6D2F03B9).
-%   - Explain why: all GMs share one TEK, so the same SPI is used regardless of destination.
-%   - Confirm with: show crypto ipsec sa | include spi  (on each GM)
-%   - Confirm TEK policy at KS with: show crypto gdoi ks policy
+A fundamental property of GETVPN is that all Group Members share a single 
+Traffic Encryption Key (TEK), meaning all encrypted traffic within the group 
+carries the same Security Parameter Index (SPI) regardless of source or 
+destination. This was verified by capturing ESP traffic at the link between R2 
+and the switch while pinging from PC1 to both PC2 and PC3.
+
+\subsubsection{Wireshark Capture}
+
+Figures~\ref{fig:esp_pc2} and \ref{fig:esp_pc3} show the ESP packets captured 
+during the two ping sessions. In both cases — PC1 to PC2 
+(\texttt{192.168.10.100} $\rightarrow$ \texttt{192.168.20.100}) and PC1 to PC3 
+(\texttt{192.168.10.100} $\rightarrow$ \texttt{192.168.30.100}) — every ESP 
+packet carries \texttt{SPI=0x24FF23B1}. Despite the traffic being destined for 
+different Group Members, the SPI is identical in both captures. Expanding any 
+individual packet confirms \texttt{ESP SPI: 0x24ff23b1 (620700593)}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/ping esp pc2.png}
+    \caption{ESP packets captured for PC1 $\rightarrow$ PC2 ping. All packets 
+    carry \texttt{SPI=0x24FF23B1}.}
+    \label{fig:esp_pc2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/ping esp pc3.png}
+    \caption{ESP packets captured for PC1 $\rightarrow$ PC3 ping. Same SPI 
+    value despite different destination.}
+    \label{fig:esp_pc3}
+\end{figure}
+
+\subsubsection{CLI Verification}
+
+The \texttt{show crypto ipsec sa | include spi} command was run on all three 
+Group Members to confirm the shared SPI at the router level:
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.7\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh crypto ipsec sa R2.png}
+    \end{subfigure}
+    \vspace{0.5em}
+    \begin{subfigure}[t]{0.7\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh crypto ipsec sa R3.png}
+    \end{subfigure}
+    \vspace{0.5em}
+    \begin{subfigure}[t]{0.7\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh crypto ipsec sa R4.png}
+    \end{subfigure}
+    \caption{\texttt{show crypto ipsec sa | include spi} across all Group Members showing that they all have the same SPI}
+    \label{fig:cryptoipsecR2}
+    \label{fig:cryptoipsecR3}
+    \label{fig:cryptoipsecR4}
+\end{figure}
+
+All three GMs report the same SPI value, confirming they hold an identical TEK. 
+The TEK policy at the Key Server, visible in the 
+\texttt{show crypto gdoi ks policy} output (Figure~\ref{fig:ks_policy}), 
+confirms that \texttt{spi: 0x24FF23B1} is the single TEK distributed to the 
+group, with \texttt{transform: esp-aes esp-sha-hmac} and an original lifetime 
+of 3600 seconds.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/ks policy.png}
+    \caption{\texttt{show crypto gdoi ks policy} on R1 confirming the TEK SPI 
+    and policy distributed to all GMs.}
+    \label{fig:ks_policy}
+\end{figure}
+
+\subsubsection{Why All SPIs Are Identical}
+
+In a traditional point-to-point IPSec VPN, each pair of endpoints negotiates 
+its own independent SA with a unique SPI. In GETVPN, the Key Server generates 
+a single TEK and distributes it to all Group Members simultaneously during the 
+GROUPKEY-PULL exchange. Because every GM holds the same key, any GM can decrypt 
+traffic encrypted by any other GM without prior negotiation. The shared SPI is 
+the identifier for this common key, which is why it appears identically on R2, 
+R3, and R4 and in every ESP packet on the wire, regardless of which pair of 
+hosts is communicating.
+
+It is worth noting that the SPI observed here (\texttt{0x24FF23B1}) differs 
+from the one seen during the initial verification (\texttt{0x6D2F03B9}). This 
+is because the TEK has a lifetime of 3600 seconds and was refreshed between 
+the two observations. The rekey process — in which the KS distributes a new 
+TEK to all GMs before the old one expires — is examined in the following task.
 
 \subsection{TEK Rekey Observation}
 

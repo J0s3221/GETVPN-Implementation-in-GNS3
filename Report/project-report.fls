@@ -1395,6 +1395,36 @@ INPUT ../Images/GM R4 iskamp.png
 INPUT ../Images/GM R4 iskamp.png
 INPUT ../Images/GM R4 iskamp.png
 INPUT ../Images/GM R4 iskamp.png
+INPUT ../Images/ping esp pc2.png
+INPUT ../Images/ping esp pc2.png
+INPUT ../Images/ping esp pc2.png
+INPUT ../Images/ping esp pc2.png
+INPUT ../Images/ping esp pc2.png
+INPUT ../Images/ping esp pc3.png
+INPUT ../Images/ping esp pc3.png
+INPUT ../Images/ping esp pc3.png
+INPUT ../Images/ping esp pc3.png
+INPUT ../Images/ping esp pc3.png
+INPUT ../Images/sh crypto ipsec sa R2.png
+INPUT ../Images/sh crypto ipsec sa R2.png
+INPUT ../Images/sh crypto ipsec sa R2.png
+INPUT ../Images/sh crypto ipsec sa R2.png
+INPUT ../Images/sh crypto ipsec sa R2.png
+INPUT ../Images/sh crypto ipsec sa R3.png
+INPUT ../Images/sh crypto ipsec sa R3.png
+INPUT ../Images/sh crypto ipsec sa R3.png
+INPUT ../Images/sh crypto ipsec sa R3.png
+INPUT ../Images/sh crypto ipsec sa R3.png
+INPUT ../Images/sh crypto ipsec sa R4.png
+INPUT ../Images/sh crypto ipsec sa R4.png
+INPUT ../Images/sh crypto ipsec sa R4.png
+INPUT ../Images/sh crypto ipsec sa R4.png
+INPUT ../Images/sh crypto ipsec sa R4.png
+INPUT ../Images/ks policy.png
+INPUT ../Images/ks policy.png
+INPUT ../Images/ks policy.png
+INPUT ../Images/ks policy.png
+INPUT ../Images/ks policy.png
 INPUT project-report.aux
 INPUT ./project-report.out
 INPUT ./project-report.out
@@ -1404,6 +1434,7 @@ INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb
+INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb
