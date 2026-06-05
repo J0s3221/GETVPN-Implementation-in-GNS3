@@ -674,13 +674,224 @@ single key, while the KEK rotates less often to reduce management overhead.
 \section{GETVPN Extensions}
 % ======================================================================
 
-% TODO: Fill in after implementing extensions from Section 5 of the lab guide.
-%
-% Candidate extensions (choose one or more):
-%   - Redundant Key Servers
-%   - RSA signature-based authentication (instead of pre-shared key)
-%   - VRF-aware GETVPN
-%   - GETVPN for IPv6
+\subsection{COOP Redundancy}
+
+\subsubsection{Overview}
+
+In the base GETVPN configuration, R1 is the sole Key Server. If R1 becomes 
+unavailable, Group Members can no longer rekey and will eventually lose the 
+ability to encrypt traffic once the current TEK expires. To address this single 
+point of failure, Cisco's \textbf{Cooperative Key Server (COOP)} mechanism 
+allows multiple Key Servers to operate together, providing redundancy. The KSs 
+elect a \textbf{Primary} and a \textbf{Secondary} based on configured priority 
+values. The Primary handles all GM registrations and rekeys under normal 
+operation, while the Secondary maintains synchronised group state via a secure 
+channel between the two KSs. If the Primary becomes unreachable, the Secondary 
+detects the failure through missed heartbeat announcements and promotes itself 
+to Primary, after which GMs re-register with it.
+
+For this extension, a fifth router R5 was added to the topology at address 
+\texttt{192.168.1.252}, connected to the same shared segment as the other 
+routers and participating in OSPF. Figure~\ref{fig:coop_topology} shows the 
+updated topology.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../Images/topology COOP.png}
+    \caption{Updated topology with R5 added as the Secondary Key Server.}
+    \label{fig:coop_topology}
+\end{figure}
+
+\subsubsection{COOP Configuration}
+
+R5 was configured with the same base GETVPN security policy as R1 — identical 
+IKE Phase 1 parameters, transform set, IPSec profile, RSA key pair, traffic 
+ACL, and GDOI group. The COOP-specific addition is the \texttt{redundancy} 
+block inside the \texttt{server local} configuration, which declares the peer 
+KS address and the local priority:
+
+\begin{configbox}
+! On R1 - add COOP peer and set priority
+R1(config)#crypto gdoi group myGDOIGroup
+R1(config-gkm-group)#server local
+R1(gkm-local-server)#redundancy
+R1(gkm-ks-redundancy)#local priority 100
+R1(gkm-ks-redundancy)#peer address ipv4 192.168.1.252
+
+! On R5 - same structure, lower priority
+R5(config)#crypto gdoi group myGDOIGroup
+R5(config-gkm-group)#server local
+R5(gkm-local-server)#redundancy
+R5(gkm-ks-redundancy)#local priority 75
+R5(gkm-ks-redundancy)#peer address ipv4 192.168.1.254
+\end{configbox}
+
+R1 was assigned priority 100 and R5 priority 75, making R1 the Primary. Each 
+GM was updated to include R5 as a secondary KS address:
+
+\begin{configbox}
+Rx(config)#crypto gdoi group myGDOIGroup
+Rx(config-gkm-group)#server address ipv4 192.168.1.252
+\end{configbox}
+
+\subsubsection{Steady-State Verification}
+
+Figures~\ref{fig:coop_r1} and \ref{fig:coop_r5} show the COOP status on both 
+KSs under normal operation. R1 reports \texttt{Local KS Role: Primary} and R5 
+reports \texttt{Local KS Role: Secondary}, with both peers showing 
+\texttt{KS Status: Alive} and \texttt{IKE status: Established}. The Primary 
+sends periodic announcement messages to the Secondary every 20 seconds 
+(\texttt{Primary Refresh Policy Time: 20}); the Secondary expects these every 
+30 seconds (\texttt{Sec Primary Periodic Time: 30}) and will initiate a 
+role transition if they stop arriving.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../Images/sh crypto gdoi ks coop R1.png}
+    \caption{\texttt{show crypto gdoi ks coop} on R1. Primary role confirmed, 
+    R5 visible as Secondary peer.}
+    \label{fig:coop_r1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../Images/sh crypto gdoi ks coop R5.png}
+    \caption{\texttt{show crypto gdoi ks coop} on R5. Secondary role confirmed, 
+    R1 visible as Primary peer.}
+    \label{fig:coop_r5}
+\end{figure}
+
+The announcement message counters visible in both outputs are complementary — 
+R1 shows 6 sent and 2 received, while R5 shows 2 sent and 6 received — 
+confirming bidirectional synchronisation is working correctly.
+
+Figure~\ref{fig:coop_gm_steady} shows \texttt{show crypto gdoi} on R4 during 
+normal COOP operation. R4 is fully registered with R1 (\texttt{Registered with: 
+192.168.1.254}, \texttt{Active TEK Number: 1}) and its \texttt{Group Server list} 
+includes both KS addresses — \texttt{192.168.1.254} and \texttt{192.168.1.252} 
+— confirming that the GM is aware of the Secondary KS and will attempt to 
+contact it if the Primary becomes unavailable.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.65\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh crypto gdoi R4 ks R1 p1.png}
+    \end{subfigure}
+    \vspace{0.5em}
+    \begin{subfigure}[t]{0.65\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh crypto gdoi R4 ks R1 p2.png}
+    \end{subfigure}
+    \caption{\texttt{show crypto gdoi} on R4 under normal COOP operation. 
+    Registered with R1 as Primary, both KS addresses present in the server 
+    list, TEK active.}
+    \label{fig:coop_gm_steady}
+\end{figure}
+
+\subsubsection{Failover Test and RSA Key Issue}
+
+To test failover, R1's \texttt{gi0/0} interface was shut down while a Wireshark 
+probe captured traffic on the R5-switch link. Figure~\ref{fig:coop_wireshark} 
+shows the capture. The early packets (numbered 6 through 83) are the periodic 
+COOP heartbeat announcements from R1 (\texttt{192.168.1.254}) to R5 
+(\texttt{192.168.1.252}), labelled as \textit{Informational} by Wireshark. 
+After packet 83 the heartbeats from R1 cease, corresponding to the moment the 
+interface was shut down. R5 then sends reply-request announcements attempting 
+to reach R1 (packets 132--224), and upon receiving no response promotes itself 
+to Primary and immediately sends \textit{New Group Mode} rekey messages 
+(exchange type 33) to all three GMs (packets 225--246), pushing itself as the 
+new active KS.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/wireshark overview coop reset up.png}
+    \caption{Wireshark capture on the R5-switch link. COOP heartbeats from R1 
+    stop after packet 83; R5 then sends New Group Mode rekeys to all GMs.}
+    \label{fig:coop_wireshark}
+\end{figure}
+
+The R5 console messages at the moment of transition are shown in 
+Figure~\ref{fig:coop_failover_console}. The first message confirms R1 became 
+unreachable; the second confirms R5 transitioned to Primary.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.05\linewidth]{../Images/console messages on R5 after R1 down.png}
+    \caption{R5 console output at the moment of failover. R5 detects R1 as 
+    unreachable and promotes itself to Primary.}
+    \label{fig:coop_failover_console}
+\end{figure}
+
+Figure~\ref{fig:coop_r5_primary} shows the COOP status on R5 immediately after 
+the transition, confirming \texttt{Local KS Role: Primary} and 
+\texttt{Peer KS Status: Dead}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../Images/sh crypto gdoi ks coop R5 after R1 shut.png}
+    \caption{\texttt{show crypto gdoi ks coop} on R5 after R1 failure. R5 has 
+    assumed the Primary role.}
+    \label{fig:coop_r5_primary}
+\end{figure}
+
+Despite the clean KS-level transition, the Group Members failed to complete 
+re-registration with R5. Figure~\ref{fig:coop_gm_fail} shows R4's state during 
+this period: \texttt{Registration status: Registering}, 
+\texttt{Attempted registration: 9}, and critically \texttt{Active TEK Number: 0}, 
+meaning R4 had lost its TEK and was unable to obtain a new one from R5. The same 
+state was observed on R2 and R3. The GM console logs showed repeated alternating 
+registration attempts between \texttt{192.168.1.254} and \texttt{192.168.1.252}, 
+neither succeeding.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../Images/sh crypto dgoi R4 ks R5 fail.png}
+    \caption{\texttt{show crypto gdoi} on R4 during failed re-registration. 
+    Active TEK is 0 and registration attempts to R5 are failing. 
+    Also comparing with Figure~\ref{fig:coop_gm_steady} there is nothing under TEK policy.}
+    \label{fig:coop_gm_fail}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.65\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh crypto gdoi ks members R5 p1.png}
+    \end{subfigure}
+    \vspace{0.5em}
+    \begin{subfigure}[t]{0.65\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh crypto gdoi ks members R5 p2.png}
+    \end{subfigure}
+    \caption{\texttt{show crypto gdoi ks members} on R5. GMs appear registered 
+    from the state synchronised with R1, but \texttt{Key Server ID} still shows 
+    \texttt{192.168.1.254}, indicating no fresh registration with R5 has 
+    completed.}
+    \label{fig:coop_ks_members}
+\end{figure}
+
+\paragraph{Root Cause}
+
+The failure was caused by an RSA key mismatch between the two Key Servers. 
+During the original GROUPKEY-PULL with R1, each GM received R1's RSA public key 
+and stored it as the trusted key for verifying rekey message signatures. When R5 
+promoted itself to Primary and sent New Group Mode rekey messages, it signed them 
+with its own independently generated RSA key pair. The GMs attempted to verify 
+these signatures using R1's public key, which naturally failed, causing every 
+rekey and re-registration attempt with R5 to be rejected.
+
+This is a known and documented limitation of GETVPN COOP when RSA key pairs are 
+generated independently on each KS. Cisco's recommended solution is to deploy a 
+\textbf{Public Key Infrastructure (PKI)} with a Certificate Authority (CA): both 
+KSs enroll with the CA and receive signed certificates, and GMs trust any rekey 
+message signed by a certificate issued by that CA rather than trusting a specific 
+KS's public key. This means a GM will accept rekeys from either KS transparently, 
+which is precisely the behaviour required for seamless failover. Conveniently, 
+certificate-based authentication is also one of the extensions suggested in the 
+lab guide as a replacement for the pre-shared key authentication used in the base 
+configuration. The following section describes the PKI setup and the corrected 
+COOP failover.
 
 % ======================================================================
 \section{Conclusion}

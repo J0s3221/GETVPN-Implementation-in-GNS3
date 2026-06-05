@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.5.16)  3 JUN 2026 20:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.5.16)  5 JUN 2026 01:00
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -769,7 +769,7 @@ LaTeX Info: Redefining \nameref on input line 103.
 File: translations-basic-dictionary-english.trsl (english translation file `translations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 103.
-<../Images/IST_A.png, id=159, 709.6914pt x 394.1124pt>
+<../Images/IST_A.png, id=179, 709.6914pt x 394.1124pt>
 File: ../Images/IST_A.png Graphic file (type png)
 <use ../Images/IST_A.png>
 Package pdftex.def Info: ../Images/IST_A.png  used on input line 111.
@@ -790,7 +790,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \openout5 = `project-report.toc'.
 
  [1]
-<../Images/Project Topology.png, id=210, 560.0925pt x 506.89375pt>
+<../Images/Project Topology.png, id=235, 560.0925pt x 506.89375pt>
 File: ../Images/Project Topology.png Graphic file (type png)
 <use ../Images/Project Topology.png>
 Package pdftex.def Info: ../Images/Project Topology.png  used on input line 176.
@@ -815,18 +815,18 @@ Package pdftex.def Info: ../Images/Project Topology.png  used on input line 176.
 \openout6 = `project-report.listing'.
 
  (./project-report.listing) [5]
-<../Images/sh crypto gdoi ks.png, id=262, 556.0775pt x 651.43375pt>
+<../Images/sh crypto gdoi ks.png, id=287, 556.0775pt x 651.43375pt>
 File: ../Images/sh crypto gdoi ks.png Graphic file (type png)
 <use ../Images/sh crypto gdoi ks.png>
 Package pdftex.def Info: ../Images/sh crypto gdoi ks.png  used on input line 298.
 (pdftex.def)             Requested size: 314.40001pt x 368.31918pt.
  [6]
-<../Images/sh member ks p1.png, id=290, 660.4675pt x 699.61375pt>
+<../Images/sh member ks p1.png, id=316, 660.4675pt x 699.61375pt>
 File: ../Images/sh member ks p1.png Graphic file (type png)
 <use ../Images/sh member ks p1.png>
 Package pdftex.def Info: ../Images/sh member ks p1.png  used on input line 307.
 (pdftex.def)             Requested size: 314.40001pt x 333.0459pt.
-<../Images/sh members ks p2.png, id=291, 660.4675pt x 336.25626pt>
+<../Images/sh members ks p2.png, id=317, 660.4675pt x 336.25626pt>
 File: ../Images/sh members ks p2.png Graphic file (type png)
 <use ../Images/sh members ks p2.png>
 Package pdftex.def Info: ../Images/sh members ks p2.png  used on input line 312.
@@ -836,88 +836,88 @@ Overfull \hbox (13.23251pt too wide) in paragraph at lines 329--330
 []\OT1/cmr/bx/n/12 TEK pol-icy\OT1/cmr/m/n/12 : The Traf-fic En-cryp-tion Key pol-icy shows \OT1/cmtt/m/n/12 transform:esp-aes esp-sha-hmac
  []
 
-<../Images/sh crypto gdoi gm p1.png, id=307, 660.4675pt x 678.535pt>
+<../Images/sh crypto gdoi gm p1.png, id=332, 660.4675pt x 678.535pt>
 File: ../Images/sh crypto gdoi gm p1.png Graphic file (type png)
 <use ../Images/sh crypto gdoi gm p1.png>
 Package pdftex.def Info: ../Images/sh crypto gdoi gm p1.png  used on input line 338.
 (pdftex.def)             Requested size: 314.40001pt x 323.01152pt.
-<../Images/sh crypto gdoi gm p2.png, id=308, 660.4675pt x 538.01pt>
+<../Images/sh crypto gdoi gm p2.png, id=333, 660.4675pt x 538.01pt>
 File: ../Images/sh crypto gdoi gm p2.png Graphic file (type png)
 <use ../Images/sh crypto gdoi gm p2.png>
 Package pdftex.def Info: ../Images/sh crypto gdoi gm p2.png  used on input line 343.
 (pdftex.def)             Requested size: 314.40001pt x 256.11563pt.
 [9] [10 <../Images/sh crypto gdoi gm p1.png> <../Images/sh crypto gdoi gm p2.png>]
-<../Images/udp port 848 filter (raw).png, id=322, 1032.85875pt x 612.2875pt>
+<../Images/udp port 848 filter (raw).png, id=347, 1032.85875pt x 612.2875pt>
 File: ../Images/udp port 848 filter (raw).png Graphic file (type png)
 <use ../Images/udp port 848 filter (raw).png>
 Package pdftex.def Info: ../Images/udp port 848 filter (raw).png  used on input line 367.
 (pdftex.def)             Requested size: 411.14528pt x 243.72414pt.
-<../Images/udp port 848 filter.png, id=323, 1032.85875pt x 612.2875pt>
+<../Images/udp port 848 filter.png, id=348, 1032.85875pt x 612.2875pt>
 File: ../Images/udp port 848 filter.png Graphic file (type png)
 <use ../Images/udp port 848 filter.png>
 Package pdftex.def Info: ../Images/udp port 848 filter.png  used on input line 375.
 (pdftex.def)             Requested size: 411.14528pt x 243.72414pt.
  [11 <../Images/udp port 848 filter (raw).png>]
-<../Images/iskamp packet content IKE phase1 .png, id=331, 1017.8025pt x 594.22pt>
+<../Images/iskamp packet content IKE phase1 .png, id=356, 1017.8025pt x 594.22pt>
 File: ../Images/iskamp packet content IKE phase1 .png Graphic file (type png)
 <use ../Images/iskamp packet content IKE phase1 .png>
 Package pdftex.def Info: ../Images/iskamp packet content IKE phase1 .png  used on input line 404.
 (pdftex.def)             Requested size: 411.14528pt x 240.04121pt.
  [12 <../Images/udp port 848 filter.png>]
-<../Images/GROUPKEY Pull p1.png, id=342, 1305.87875pt x 1058.95625pt>
+<../Images/GROUPKEY Pull p1.png, id=367, 1305.87875pt x 1058.95625pt>
 File: ../Images/GROUPKEY Pull p1.png Graphic file (type png)
 <use ../Images/GROUPKEY Pull p1.png>
 Package pdftex.def Info: ../Images/GROUPKEY Pull p1.png  used on input line 435.
 (pdftex.def)             Requested size: 459.51054pt x 372.61156pt.
-<../Images/GROUPKEY Pull p2.png, id=343, 954.56625pt x 388.45125pt>
+<../Images/GROUPKEY Pull p2.png, id=368, 954.56625pt x 388.45125pt>
 File: ../Images/GROUPKEY Pull p2.png Graphic file (type png)
 <use ../Images/GROUPKEY Pull p2.png>
 Package pdftex.def Info: ../Images/GROUPKEY Pull p2.png  used on input line 440.
 (pdftex.def)             Requested size: 459.51054pt x 186.98793pt.
  [13 <../Images/iskamp packet content IKE phase1 .png>] [14 <../Images/GROUPKEY Pull p1.png> <../Images/GROUPKEY Pull p2.png>]
-<../Images/GM R2 iskamp.png, id=359, 1131.22626pt x 277.035pt>
+<../Images/GM R2 iskamp.png, id=384, 1131.22626pt x 277.035pt>
 File: ../Images/GM R2 iskamp.png Graphic file (type png)
 <use ../Images/GM R2 iskamp.png>
 Package pdftex.def Info: ../Images/GM R2 iskamp.png  used on input line 459.
 (pdftex.def)             Requested size: 411.14528pt x 100.68787pt.
-<../Images/GM R3 iskamp.png, id=360, 1032.85875pt x 309.155pt>
+<../Images/GM R3 iskamp.png, id=385, 1032.85875pt x 309.155pt>
 File: ../Images/GM R3 iskamp.png Graphic file (type png)
 <use ../Images/GM R3 iskamp.png>
 Package pdftex.def Info: ../Images/GM R3 iskamp.png  used on input line 466.
 (pdftex.def)             Requested size: 411.14528pt x 123.0607pt.
-<../Images/GM R4 iskamp.png, id=361, 1032.85875pt x 309.155pt>
+<../Images/GM R4 iskamp.png, id=386, 1032.85875pt x 309.155pt>
 File: ../Images/GM R4 iskamp.png Graphic file (type png)
 <use ../Images/GM R4 iskamp.png>
 Package pdftex.def Info: ../Images/GM R4 iskamp.png  used on input line 473.
 (pdftex.def)             Requested size: 411.14528pt x 123.0607pt.
  [15 <../Images/GM R2 iskamp.png> <../Images/GM R3 iskamp.png> <../Images/GM R4 iskamp.png>]
-<../Images/ping esp pc2.png, id=374, 1131.22626pt x 506.89375pt>
+<../Images/ping esp pc2.png, id=399, 1131.22626pt x 506.89375pt>
 File: ../Images/ping esp pc2.png Graphic file (type png)
 <use ../Images/ping esp pc2.png>
 Package pdftex.def Info: ../Images/ping esp pc2.png  used on input line 498.
 (pdftex.def)             Requested size: 411.14528pt x 184.22961pt.
-<../Images/ping esp pc3.png, id=375, 1131.22626pt x 506.89375pt>
+<../Images/ping esp pc3.png, id=400, 1131.22626pt x 506.89375pt>
 File: ../Images/ping esp pc3.png Graphic file (type png)
 <use ../Images/ping esp pc3.png>
 Package pdftex.def Info: ../Images/ping esp pc3.png  used on input line 506.
 (pdftex.def)             Requested size: 411.14528pt x 184.22961pt.
-<../Images/sh crypto ipsec sa R2.png, id=376, 467.7475pt x 90.3375pt>
+<../Images/sh crypto ipsec sa R2.png, id=401, 467.7475pt x 90.3375pt>
 File: ../Images/sh crypto ipsec sa R2.png Graphic file (type png)
 <use ../Images/sh crypto ipsec sa R2.png>
 Package pdftex.def Info: ../Images/sh crypto ipsec sa R2.png  used on input line 521.
 (pdftex.def)             Requested size: 338.58632pt x 65.39581pt.
-<../Images/sh crypto ipsec sa R3.png, id=377, 467.7475pt x 90.3375pt>
+<../Images/sh crypto ipsec sa R3.png, id=402, 467.7475pt x 90.3375pt>
 File: ../Images/sh crypto ipsec sa R3.png Graphic file (type png)
 <use ../Images/sh crypto ipsec sa R3.png>
 Package pdftex.def Info: ../Images/sh crypto ipsec sa R3.png  used on input line 526.
 (pdftex.def)             Requested size: 338.58632pt x 65.39581pt.
-<../Images/sh crypto ipsec sa R4.png, id=378, 467.7475pt x 90.3375pt>
+<../Images/sh crypto ipsec sa R4.png, id=403, 467.7475pt x 90.3375pt>
 File: ../Images/sh crypto ipsec sa R4.png Graphic file (type png)
 <use ../Images/sh crypto ipsec sa R4.png>
 Package pdftex.def Info: ../Images/sh crypto ipsec sa R4.png  used on input line 531.
 (pdftex.def)             Requested size: 338.58632pt x 65.39581pt.
  [16 <../Images/ping esp pc2.png> <../Images/ping esp pc3.png>]
-<../Images/ks policy.png, id=389, 795.97375pt x 523.9575pt>
+<../Images/ks policy.png, id=414, 795.97375pt x 523.9575pt>
 File: ../Images/ks policy.png Graphic file (type png)
 <use ../Images/ks policy.png>
 Package pdftex.def Info: ../Images/ks policy.png  used on input line 548.
@@ -926,7 +926,7 @@ Package pdftex.def Info: ../Images/ks policy.png  used on input line 548.
 \openout6 = `project-report.listing'.
 
  (./project-report.listing)
-<../Images/crypto gdoi ks rekey.png, id=400, 1371.1225pt x 82.3075pt>
+<../Images/crypto gdoi ks rekey.png, id=425, 1371.1225pt x 82.3075pt>
 File: ../Images/crypto gdoi ks rekey.png Graphic file (type png)
 <use ../Images/crypto gdoi ks rekey.png>
 Package pdftex.def Info: ../Images/crypto gdoi ks rekey.png  used on input line 586.
@@ -937,49 +937,128 @@ Overfull \hbox (24.18631pt too wide) in paragraph at lines 586--587
  []
 
 [18 <../Images/ks policy.png>]
-<../Images/time to rekey proof.png, id=411, 446.66875pt x 155.58125pt>
+<../Images/time to rekey proof.png, id=436, 446.66875pt x 155.58125pt>
 File: ../Images/time to rekey proof.png Graphic file (type png)
 <use ../Images/time to rekey proof.png>
 Package pdftex.def Info: ../Images/time to rekey proof.png  used on input line 598.
 (pdftex.def)             Requested size: 266.03474pt x 92.66576pt.
-<../Images/rekey wireshark.png, id=413, 922.44624pt x 569.12625pt>
+<../Images/rekey wireshark.png, id=438, 922.44624pt x 569.12625pt>
 File: ../Images/rekey wireshark.png Graphic file (type png)
 <use ../Images/rekey wireshark.png>
 Package pdftex.def Info: ../Images/rekey wireshark.png  used on input line 614.
 (pdftex.def)             Requested size: 411.14528pt x 253.6642pt.
  [19 <../Images/crypto gdoi ks rekey.png> <../Images/time to rekey proof.png>]
-<../Images/sh crypto ipsec sa R2 after rekey.png, id=424, 1371.1225pt x 216.81pt>
+<../Images/sh crypto ipsec sa R2 after rekey.png, id=449, 1371.1225pt x 216.81pt>
 File: ../Images/sh crypto ipsec sa R2 after rekey.png Graphic file (type png)
 <use ../Images/sh crypto ipsec sa R2 after rekey.png>
 Package pdftex.def Info: ../Images/sh crypto ipsec sa R2 after rekey.png  used on input line 648.
 (pdftex.def)             Requested size: 338.58632pt x 53.5374pt.
-<../Images/sh crypto ipsec sa R3 after rekey.png, id=425, 1371.1225pt x 216.81pt>
+<../Images/sh crypto ipsec sa R3 after rekey.png, id=450, 1371.1225pt x 216.81pt>
 File: ../Images/sh crypto ipsec sa R3 after rekey.png Graphic file (type png)
 <use ../Images/sh crypto ipsec sa R3 after rekey.png>
 Package pdftex.def Info: ../Images/sh crypto ipsec sa R3 after rekey.png  used on input line 653.
 (pdftex.def)             Requested size: 338.58632pt x 53.5374pt.
-<../Images/sh crypto ipsec sa R4 after rekey.png, id=426, 1371.1225pt x 216.81pt>
+<../Images/sh crypto ipsec sa R4 after rekey.png, id=451, 1371.1225pt x 216.81pt>
 File: ../Images/sh crypto ipsec sa R4 after rekey.png Graphic file (type png)
 <use ../Images/sh crypto ipsec sa R4 after rekey.png>
 Package pdftex.def Info: ../Images/sh crypto ipsec sa R4 after rekey.png  used on input line 658.
 (pdftex.def)             Requested size: 338.58632pt x 53.5374pt.
- [20 <../Images/rekey wireshark.png>] [21 <../Images/sh crypto ipsec sa R2 after rekey.png> <../Images/sh crypto ipsec sa R3 after rekey.png> <../Images/sh crypto ipsec sa R4 after rekey.png>] (./project-report.aux)
+ [20 <../Images/rekey wireshark.png>]
+<../Images/topology COOP.png, id=458, 574.145pt x 497.86pt>
+File: ../Images/topology COOP.png Graphic file (type png)
+<use ../Images/topology COOP.png>
+Package pdftex.def Info: ../Images/topology COOP.png  used on input line 700.
+(pdftex.def)             Requested size: 362.77264pt x 314.58026pt.
+ [21 <../Images/sh crypto ipsec sa R2 after rekey.png> <../Images/sh crypto ipsec sa R3 after rekey.png> <../Images/sh crypto ipsec sa R4 after rekey.png>]
+\openout6 = `project-report.listing'.
+
+ (./project-report.listing)
+\openout6 = `project-report.listing'.
+
+ (./project-report.listing) [22 <../Images/topology COOP.png>]
+<../Images/sh crypto gdoi ks coop R1.png, id=490, 662.475pt x 639.38875pt>
+File: ../Images/sh crypto gdoi ks coop R1.png Graphic file (type png)
+<use ../Images/sh crypto gdoi ks coop R1.png>
+Package pdftex.def Info: ../Images/sh crypto gdoi ks coop R1.png  used on input line 750.
+(pdftex.def)             Requested size: 362.77264pt x 350.1234pt.
+<../Images/sh crypto gdoi ks coop R5.png, id=491, 662.475pt x 668.4975pt>
+File: ../Images/sh crypto gdoi ks coop R5.png Graphic file (type png)
+<use ../Images/sh crypto gdoi ks coop R5.png>
+Package pdftex.def Info: ../Images/sh crypto gdoi ks coop R5.png  used on input line 758.
+(pdftex.def)             Requested size: 362.77264pt x 366.0631pt.
+ [23 <../Images/sh crypto gdoi ks coop R1.png>]
+<../Images/sh crypto gdoi R4 ks R1 p1.png, id=503, 670.505pt x 825.0825pt>
+File: ../Images/sh crypto gdoi R4 ks R1 p1.png Graphic file (type png)
+<use ../Images/sh crypto gdoi R4 ks R1 p1.png>
+Package pdftex.def Info: ../Images/sh crypto gdoi R4 ks R1 p1.png  used on input line 779.
+(pdftex.def)             Requested size: 314.40001pt x 386.88237pt.
+<../Images/sh crypto gdoi R4 ks R1 p2.png, id=504, 670.505pt x 520.94624pt>
+File: ../Images/sh crypto gdoi R4 ks R1 p2.png Graphic file (type png)
+<use ../Images/sh crypto gdoi R4 ks R1 p2.png>
+Package pdftex.def Info: ../Images/sh crypto gdoi R4 ks R1 p2.png  used on input line 784.
+(pdftex.def)             Requested size: 314.40001pt x 244.27245pt.
+ [24 <../Images/sh crypto gdoi ks coop R5.png>]
+Overfull \vbox (12.7939pt too high) has occurred while \output is active []
+
+ [25 <../Images/sh crypto gdoi R4 ks R1 p1.png> <../Images/sh crypto gdoi R4 ks R1 p2.png>]
+<../Images/wireshark overview coop reset up.png, id=519, 987.69pt x 778.91pt>
+File: ../Images/wireshark overview coop reset up.png Graphic file (type png)
+<use ../Images/wireshark overview coop reset up.png>
+Package pdftex.def Info: ../Images/wireshark overview coop reset up.png  used on input line 808.
+(pdftex.def)             Requested size: 411.14528pt x 324.2281pt.
+<../Images/console messages on R5 after R1 down.png, id=521, 1369.115pt x 84.315pt>
+File: ../Images/console messages on R5 after R1 down.png Graphic file (type png)
+<use ../Images/console messages on R5 after R1 down.png>
+Package pdftex.def Info: ../Images/console messages on R5 after R1 down.png  used on input line 820.
+(pdftex.def)             Requested size: 507.88318pt x 31.2771pt.
+
+Overfull \hbox (24.18631pt too wide) in paragraph at lines 820--822
+ [][] 
+ []
+
+<../Images/sh crypto gdoi ks coop R5 after R1 shut.png, id=523, 670.505pt x 615.29875pt>
+File: ../Images/sh crypto gdoi ks coop R5 after R1 shut.png Graphic file (type png)
+<use ../Images/sh crypto gdoi ks coop R5 after R1 shut.png>
+Package pdftex.def Info: ../Images/sh crypto gdoi ks coop R5 after R1 shut.png  used on input line 832.
+(pdftex.def)             Requested size: 362.77264pt x 332.90419pt.
+[26 <../Images/wireshark overview coop reset up.png> <../Images/console messages on R5 after R1 down.png>]
+Overfull \hbox (4.40817pt too wide) in paragraph at lines 838--846
+\OT1/cmr/m/n/12 with R5. Fig-ure [][]27[][] shows R4's state dur-ing this pe-riod: \OT1/cmtt/m/n/12 Registration status: Registering\OT1/cmr/m/n/12 ,
+ []
+
+<../Images/sh crypto dgoi R4 ks R5 fail.png, id=533, 670.505pt x 926.46124pt>
+File: ../Images/sh crypto dgoi R4 ks R5 fail.png Graphic file (type png)
+<use ../Images/sh crypto dgoi R4 ks R5 fail.png>
+Package pdftex.def Info: ../Images/sh crypto dgoi R4 ks R5 fail.png  used on input line 849.
+(pdftex.def)             Requested size: 362.77264pt x 501.25705pt.
+[27 <../Images/sh crypto gdoi ks coop R5 after R1 shut.png>]
+<../Images/sh crypto gdoi ks members R5 p1.png, id=543, 660.4675pt x 451.6875pt>
+File: ../Images/sh crypto gdoi ks members R5 p1.png Graphic file (type png)
+<use ../Images/sh crypto gdoi ks members R5 p1.png>
+Package pdftex.def Info: ../Images/sh crypto gdoi ks members R5 p1.png  used on input line 860.
+(pdftex.def)             Requested size: 314.40001pt x 215.02245pt.
+<../Images/sh crypto gdoi ks members R5 p2.png, id=544, 660.4675pt x 626.34pt>
+File: ../Images/sh crypto gdoi ks members R5 p2.png Graphic file (type png)
+<use ../Images/sh crypto gdoi ks members R5 p2.png>
+Package pdftex.def Info: ../Images/sh crypto gdoi ks members R5 p2.png  used on input line 865.
+(pdftex.def)             Requested size: 314.40001pt x 298.16447pt.
+ [28 <../Images/sh crypto dgoi R4 ks R5 fail.png>] [29 <../Images/sh crypto gdoi ks members R5 p1.png> <../Images/sh crypto gdoi ks members R5 p2.png>] [30] (./project-report.aux)
 Package rerunfilecheck Info: File `project-report.out' has not changed.
-(rerunfilecheck)             Checksum: 09FBFC35BFD38499ABFFFC837FB95ADB;5002.
+(rerunfilecheck)             Checksum: 1D216A709A47252A9477965B77CFA538;5841.
  ) 
 Here is how much of TeX's memory you used:
- 34849 strings out of 480247
- 727407 string characters out of 5896151
- 1123861 words of memory out of 5000000
- 52074 multiletter control sequences out of 15000+600000
+ 34988 strings out of 480247
+ 731896 string characters out of 5896151
+ 1125277 words of memory out of 5000000
+ 52158 multiletter control sequences out of 15000+600000
  480124 words of font info for 70 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  99i,12n,117p,805b,1541s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on project-report.pdf (22 pages, 1849788 bytes).
+Output written on project-report.pdf (31 pages, 2652329 bytes).
 PDF statistics:
- 514 PDF objects out of 1000 (max. 8388607)
- 388 compressed objects within 4 object streams
- 128 named destinations out of 1000 (max. 500000)
- 524 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 643 PDF objects out of 1000 (max. 8388607)
+ 484 compressed objects within 5 object streams
+ 168 named destinations out of 1000 (max. 500000)
+ 619 words of extra memory for PDF output out of 10000 (max. 10000000)
 

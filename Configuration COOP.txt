@@ -1,0 +1,55 @@
+! R5
+! IKE Phase 1 - same as R1
+crypto isakmp policy 10
+encryption aes
+hash sha
+authentication pre-share
+group 5
+exit
+crypto isakmp key saar address 0.0.0.0
+
+! Transform set and IPSec profile - same as R1
+crypto ipsec transform-set myTSet esp-aes esp-sha-hmac
+crypto ipsec profile myIPSecProfile
+set transform-set myTSet
+exit
+
+! RSA keys
+crypto key generate rsa modulus 1024 label myRSAKeys
+
+! Traffic ACL - same as R1
+ip access-list extended ICMP
+permit icmp any any
+exit
+
+! GDOI group - same identity number, but now declares both KSs
+crypto gdoi group myGDOIGroup
+identity number 123
+server local
+address ipv4 192.168.1.252
+rekey authentication mypubkey rsa myRSAKeys
+rekey transport unicast
+sa ipsec 10
+profile myIPSecProfile
+match address ipv4 ICMP
+exit
+
+! COOP - tell R5 about R1 as its peer KS
+crypto gdoi group myGDOIGroup
+server local
+redundancy
+local priority 75
+peer address ipv4 192.168.1.254
+exit
+
+! R1
+crypto gdoi group myGDOIGroup
+server local
+redundancy
+local priority 100
+peer address ipv4 192.168.1.252
+exit
+
+! GMs
+crypto gdoi group myGDOIGroup
+server address ipv4 192.168.1.252

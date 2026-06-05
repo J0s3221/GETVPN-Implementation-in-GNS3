@@ -1462,6 +1462,75 @@ INPUT ../Images/sh crypto ipsec sa R4 after rekey.png
 INPUT ../Images/sh crypto ipsec sa R4 after rekey.png
 INPUT ../Images/sh crypto ipsec sa R4 after rekey.png
 INPUT ../Images/sh crypto ipsec sa R4 after rekey.png
+INPUT ../Images/topology COOP.png
+INPUT ../Images/topology COOP.png
+INPUT ../Images/topology COOP.png
+INPUT ../Images/topology COOP.png
+INPUT ../Images/topology COOP.png
+OUTPUT project-report.listing
+INPUT ./project-report.listing
+INPUT project-report.listing
+INPUT ./project-report.listing
+INPUT project-report.listing
+INPUT ./project-report.listing
+INPUT project-report.listing
+OUTPUT project-report.listing
+INPUT ./project-report.listing
+INPUT project-report.listing
+INPUT ./project-report.listing
+INPUT project-report.listing
+INPUT ./project-report.listing
+INPUT project-report.listing
+INPUT ../Images/sh crypto gdoi ks coop R1.png
+INPUT ../Images/sh crypto gdoi ks coop R1.png
+INPUT ../Images/sh crypto gdoi ks coop R1.png
+INPUT ../Images/sh crypto gdoi ks coop R1.png
+INPUT ../Images/sh crypto gdoi ks coop R1.png
+INPUT ../Images/sh crypto gdoi ks coop R5.png
+INPUT ../Images/sh crypto gdoi ks coop R5.png
+INPUT ../Images/sh crypto gdoi ks coop R5.png
+INPUT ../Images/sh crypto gdoi ks coop R5.png
+INPUT ../Images/sh crypto gdoi ks coop R5.png
+INPUT ../Images/sh crypto gdoi R4 ks R1 p1.png
+INPUT ../Images/sh crypto gdoi R4 ks R1 p1.png
+INPUT ../Images/sh crypto gdoi R4 ks R1 p1.png
+INPUT ../Images/sh crypto gdoi R4 ks R1 p1.png
+INPUT ../Images/sh crypto gdoi R4 ks R1 p1.png
+INPUT ../Images/sh crypto gdoi R4 ks R1 p2.png
+INPUT ../Images/sh crypto gdoi R4 ks R1 p2.png
+INPUT ../Images/sh crypto gdoi R4 ks R1 p2.png
+INPUT ../Images/sh crypto gdoi R4 ks R1 p2.png
+INPUT ../Images/sh crypto gdoi R4 ks R1 p2.png
+INPUT ../Images/wireshark overview coop reset up.png
+INPUT ../Images/wireshark overview coop reset up.png
+INPUT ../Images/wireshark overview coop reset up.png
+INPUT ../Images/wireshark overview coop reset up.png
+INPUT ../Images/wireshark overview coop reset up.png
+INPUT ../Images/console messages on R5 after R1 down.png
+INPUT ../Images/console messages on R5 after R1 down.png
+INPUT ../Images/console messages on R5 after R1 down.png
+INPUT ../Images/console messages on R5 after R1 down.png
+INPUT ../Images/console messages on R5 after R1 down.png
+INPUT ../Images/sh crypto gdoi ks coop R5 after R1 shut.png
+INPUT ../Images/sh crypto gdoi ks coop R5 after R1 shut.png
+INPUT ../Images/sh crypto gdoi ks coop R5 after R1 shut.png
+INPUT ../Images/sh crypto gdoi ks coop R5 after R1 shut.png
+INPUT ../Images/sh crypto gdoi ks coop R5 after R1 shut.png
+INPUT ../Images/sh crypto dgoi R4 ks R5 fail.png
+INPUT ../Images/sh crypto dgoi R4 ks R5 fail.png
+INPUT ../Images/sh crypto dgoi R4 ks R5 fail.png
+INPUT ../Images/sh crypto dgoi R4 ks R5 fail.png
+INPUT ../Images/sh crypto dgoi R4 ks R5 fail.png
+INPUT ../Images/sh crypto gdoi ks members R5 p1.png
+INPUT ../Images/sh crypto gdoi ks members R5 p1.png
+INPUT ../Images/sh crypto gdoi ks members R5 p1.png
+INPUT ../Images/sh crypto gdoi ks members R5 p1.png
+INPUT ../Images/sh crypto gdoi ks members R5 p1.png
+INPUT ../Images/sh crypto gdoi ks members R5 p2.png
+INPUT ../Images/sh crypto gdoi ks members R5 p2.png
+INPUT ../Images/sh crypto gdoi ks members R5 p2.png
+INPUT ../Images/sh crypto gdoi ks members R5 p2.png
+INPUT ../Images/sh crypto gdoi ks members R5 p2.png
 INPUT project-report.aux
 INPUT ./project-report.out
 INPUT ./project-report.out
