@@ -1501,11 +1501,6 @@ INPUT ../Images/sh crypto gdoi R4 ks R1 p2.png
 INPUT ../Images/sh crypto gdoi R4 ks R1 p2.png
 INPUT ../Images/sh crypto gdoi R4 ks R1 p2.png
 INPUT ../Images/sh crypto gdoi R4 ks R1 p2.png
-INPUT ../Images/wireshark overview coop reset up.png
-INPUT ../Images/wireshark overview coop reset up.png
-INPUT ../Images/wireshark overview coop reset up.png
-INPUT ../Images/wireshark overview coop reset up.png
-INPUT ../Images/wireshark overview coop reset up.png
 INPUT ../Images/console messages on R5 after R1 down.png
 INPUT ../Images/console messages on R5 after R1 down.png
 INPUT ../Images/console messages on R5 after R1 down.png
@@ -1516,11 +1511,11 @@ INPUT ../Images/sh crypto gdoi ks coop R5 after R1 shut.png
 INPUT ../Images/sh crypto gdoi ks coop R5 after R1 shut.png
 INPUT ../Images/sh crypto gdoi ks coop R5 after R1 shut.png
 INPUT ../Images/sh crypto gdoi ks coop R5 after R1 shut.png
-INPUT ../Images/sh crypto dgoi R4 ks R5 fail.png
-INPUT ../Images/sh crypto dgoi R4 ks R5 fail.png
-INPUT ../Images/sh crypto dgoi R4 ks R5 fail.png
-INPUT ../Images/sh crypto dgoi R4 ks R5 fail.png
-INPUT ../Images/sh crypto dgoi R4 ks R5 fail.png
+INPUT ../Images/wireshark overview coop reset up.png
+INPUT ../Images/wireshark overview coop reset up.png
+INPUT ../Images/wireshark overview coop reset up.png
+INPUT ../Images/wireshark overview coop reset up.png
+INPUT ../Images/wireshark overview coop reset up.png
 INPUT ../Images/sh crypto gdoi ks members R5 p1.png
 INPUT ../Images/sh crypto gdoi ks members R5 p1.png
 INPUT ../Images/sh crypto gdoi ks members R5 p1.png
@@ -1531,6 +1526,58 @@ INPUT ../Images/sh crypto gdoi ks members R5 p2.png
 INPUT ../Images/sh crypto gdoi ks members R5 p2.png
 INPUT ../Images/sh crypto gdoi ks members R5 p2.png
 INPUT ../Images/sh crypto gdoi ks members R5 p2.png
+INPUT ../Images/debug_R2_psk_missing.png
+INPUT ../Images/debug_R2_psk_missing.png
+INPUT ../Images/debug_R2_psk_missing.png
+INPUT ../Images/debug_R2_psk_missing.png
+INPUT ../Images/debug_R2_psk_missing.png
+INPUT ../Images/debug_R2_psk_error.png
+INPUT ../Images/debug_R2_psk_error.png
+INPUT ../Images/debug_R2_psk_error.png
+INPUT ../Images/debug_R2_psk_error.png
+INPUT ../Images/debug_R2_psk_error.png
+OUTPUT project-report.listing
+INPUT ./project-report.listing
+INPUT project-report.listing
+INPUT ./project-report.listing
+INPUT project-report.listing
+INPUT ./project-report.listing
+INPUT project-report.listing
+INPUT ../Images/R2 registered with R5 p1.png
+INPUT ../Images/R2 registered with R5 p1.png
+INPUT ../Images/R2 registered with R5 p1.png
+INPUT ../Images/R2 registered with R5 p1.png
+INPUT ../Images/R2 registered with R5 p1.png
+INPUT ../Images/R2 registered with R5 p2.png
+INPUT ../Images/R2 registered with R5 p2.png
+INPUT ../Images/R2 registered with R5 p2.png
+INPUT ../Images/R2 registered with R5 p2.png
+INPUT ../Images/R2 registered with R5 p2.png
+INPUT ../Images/sh gdoi members R5 success p1.png
+INPUT ../Images/sh gdoi members R5 success p1.png
+INPUT ../Images/sh gdoi members R5 success p1.png
+INPUT ../Images/sh gdoi members R5 success p1.png
+INPUT ../Images/sh gdoi members R5 success p1.png
+INPUT ../Images/sh gdoi members R5 success p2.png
+INPUT ../Images/sh gdoi members R5 success p2.png
+INPUT ../Images/sh gdoi members R5 success p2.png
+INPUT ../Images/sh gdoi members R5 success p2.png
+INPUT ../Images/sh gdoi members R5 success p2.png
+INPUT ../Images/Successful ping after failover test.png
+INPUT ../Images/Successful ping after failover test.png
+INPUT ../Images/Successful ping after failover test.png
+INPUT ../Images/Successful ping after failover test.png
+INPUT ../Images/Successful ping after failover test.png
+INPUT ../Images/wireshark re-registration overview.png
+INPUT ../Images/wireshark re-registration overview.png
+INPUT ../Images/wireshark re-registration overview.png
+INPUT ../Images/wireshark re-registration overview.png
+INPUT ../Images/wireshark re-registration overview.png
+INPUT ../Images/contents of new group msg.png
+INPUT ../Images/contents of new group msg.png
+INPUT ../Images/contents of new group msg.png
+INPUT ../Images/contents of new group msg.png
+INPUT ../Images/contents of new group msg.png
 INPUT project-report.aux
 INPUT ./project-report.out
 INPUT ./project-report.out

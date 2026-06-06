@@ -104,17 +104,32 @@
 \newlabel{fig:coop_r5}{{22}{24}{\texttt {show crypto gdoi ks coop} on R5. Secondary role confirmed, R1 visible as Primary peer.\relax }{figure.caption.23}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces \texttt  {show crypto gdoi} on R4 under normal COOP operation. Registered with R1 as Primary, both KS addresses present in the server list, TEK active.\relax }}{25}{figure.caption.24}\protected@file@percent }
 \newlabel{fig:coop_gm_steady}{{23}{25}{\texttt {show crypto gdoi} on R4 under normal COOP operation. Registered with R1 as Primary, both KS addresses present in the server list, TEK active.\relax }{figure.caption.24}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.4}Failover Test and RSA Key Issue}{26}{subsubsection.6.1.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {24}{\ignorespaces Wireshark capture on the R5-switch link. COOP heartbeats from R1 stop after packet 83; R5 then sends New Group Mode rekeys to all GMs.\relax }}{26}{figure.caption.25}\protected@file@percent }
-\newlabel{fig:coop_wireshark}{{24}{26}{Wireshark capture on the R5-switch link. COOP heartbeats from R1 stop after packet 83; R5 then sends New Group Mode rekeys to all GMs.\relax }{figure.caption.25}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {25}{\ignorespaces R5 console output at the moment of failover. R5 detects R1 as unreachable and promotes itself to Primary.\relax }}{26}{figure.caption.26}\protected@file@percent }
-\newlabel{fig:coop_failover_console}{{25}{26}{R5 console output at the moment of failover. R5 detects R1 as unreachable and promotes itself to Primary.\relax }{figure.caption.26}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {26}{\ignorespaces \texttt  {show crypto gdoi ks coop} on R5 after R1 failure. R5 has assumed the Primary role.\relax }}{27}{figure.caption.27}\protected@file@percent }
-\newlabel{fig:coop_r5_primary}{{26}{27}{\texttt {show crypto gdoi ks coop} on R5 after R1 failure. R5 has assumed the Primary role.\relax }{figure.caption.27}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {27}{\ignorespaces \texttt  {show crypto gdoi} on R4 during failed re-registration. Active TEK is 0 and registration attempts to R5 are failing. Also comparing with Figure~\ref  {fig:coop_gm_steady} there is nothing under TEK policy.\relax }}{28}{figure.caption.28}\protected@file@percent }
-\newlabel{fig:coop_gm_fail}{{27}{28}{\texttt {show crypto gdoi} on R4 during failed re-registration. Active TEK is 0 and registration attempts to R5 are failing. Also comparing with Figure~\ref {fig:coop_gm_steady} there is nothing under TEK policy.\relax }{figure.caption.28}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {28}{\ignorespaces \texttt  {show crypto gdoi ks members} on R5. GMs appear registered from the state synchronised with R1, but \texttt  {Key Server ID} still shows \texttt  {192.168.1.254}, indicating no fresh registration with R5 has completed.\relax }}{29}{figure.caption.29}\protected@file@percent }
-\newlabel{fig:coop_ks_members}{{28}{29}{\texttt {show crypto gdoi ks members} on R5. GMs appear registered from the state synchronised with R1, but \texttt {Key Server ID} still shows \texttt {192.168.1.254}, indicating no fresh registration with R5 has completed.\relax }{figure.caption.29}{}}
-\@writefile{toc}{\contentsline {paragraph}{Root Cause}{29}{figure.caption.29}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{30}{section.7}\protected@file@percent }
-\gdef \@abspage@last{31}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Failover Test -- First Attempt and Diagnosis}{26}{subsection.6.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {24}{\ignorespaces R5 console at the moment of failover. R1 is declared unreachable and R5 transitions to Primary.\relax }}{26}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:coop_failover_console}{{24}{26}{R5 console at the moment of failover. R1 is declared unreachable and R5 transitions to Primary.\relax }{figure.caption.25}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {25}{\ignorespaces \texttt  {show crypto gdoi ks coop} on R5 after R1 failure. R5 has assumed the Primary role.\relax }}{26}{figure.caption.26}\protected@file@percent }
+\newlabel{fig:coop_r5_primary}{{25}{26}{\texttt {show crypto gdoi ks coop} on R5 after R1 failure. R5 has assumed the Primary role.\relax }{figure.caption.26}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {26}{\ignorespaces R5-switch Wireshark capture showing COOP heartbeats, R5 promotion, and New Group Mode rekeys to GMs.\relax }}{27}{figure.caption.27}\protected@file@percent }
+\newlabel{fig:coop_wireshark}{{26}{27}{R5-switch Wireshark capture showing COOP heartbeats, R5 promotion, and New Group Mode rekeys to GMs.\relax }{figure.caption.27}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {27}{\ignorespaces \texttt  {show crypto gdoi ks members} on R5 after first failover attempt. GMs appear registered from synchronised state but no fresh registration with R5 has completed.\relax }}{28}{figure.caption.28}\protected@file@percent }
+\newlabel{fig:coop_ks_members_fail}{{27}{28}{\texttt {show crypto gdoi ks members} on R5 after first failover attempt. GMs appear registered from synchronised state but no fresh registration with R5 has completed.\relax }{figure.caption.28}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.1}Root Cause Diagnosis}{28}{subsubsection.6.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {28}{\ignorespaces R2 debug output showing IKE Phase 1 retransmission attempts to R1 (\texttt  {192.168.1.254}) failing with no response.\relax }}{29}{figure.caption.29}\protected@file@percent }
+\newlabel{fig:debug_retransmit}{{28}{29}{R2 debug output showing IKE Phase 1 retransmission attempts to R1 (\texttt {192.168.1.254}) failing with no response.\relax }{figure.caption.29}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {29}{\ignorespaces R2 debug output showing the explicit error when attempting IKE Phase 1 with R5: \texttt  {No pre-shared key with 192.168.1.252}.\relax }}{29}{figure.caption.30}\protected@file@percent }
+\newlabel{fig:debug_psk}{{29}{29}{R2 debug output showing the explicit error when attempting IKE Phase 1 with R5: \texttt {No pre-shared key with 192.168.1.252}.\relax }{figure.caption.30}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Clean Failover Verification}{30}{subsection.6.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {30}{\ignorespaces \texttt  {show crypto gdoi} on R2 after successful failover. Registered with R5 (\texttt  {192.168.1.252}), TEK active.\relax }}{31}{figure.caption.31}\protected@file@percent }
+\newlabel{fig:r2_reg_r5_p1}{{30}{31}{\texttt {show crypto gdoi} on R2 after successful failover. Registered with R5 (\texttt {192.168.1.252}), TEK active.\relax }{figure.caption.31}{}}
+\newlabel{fig:r2_reg_r5_p2}{{30}{31}{\texttt {show crypto gdoi} on R2 after successful failover. Registered with R5 (\texttt {192.168.1.252}), TEK active.\relax }{figure.caption.31}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {31}{\ignorespaces \texttt  {show crypto gdoi ks members} on R5 after successful failover. All three GMs registered with R5 as the active Key Server.\relax }}{32}{figure.caption.32}\protected@file@percent }
+\newlabel{fig:r5_members_success}{{31}{32}{\texttt {show crypto gdoi ks members} on R5 after successful failover. All three GMs registered with R5 as the active Key Server.\relax }{figure.caption.32}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {32}{\ignorespaces Successful pings from PC1 to PC2 and PC3 with R5 as Primary KS, confirming traffic encryption is operational after failover.\relax }}{32}{figure.caption.33}\protected@file@percent }
+\newlabel{fig:ping_after_failover}{{32}{32}{Successful pings from PC1 to PC2 and PC3 with R5 as Primary KS, confirming traffic encryption is operational after failover.\relax }{figure.caption.33}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Recovery -- R1 Returning as Primary}{33}{subsection.6.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {33}{\ignorespaces R1-switch capture showing the recovery sequence: COOP re-establishment, R1 sending New Group Mode rekeys to GMs, and GMs re-registering with R1 as Primary.\relax }}{33}{figure.caption.34}\protected@file@percent }
+\newlabel{fig:wireshark_recovery}{{33}{33}{R1-switch capture showing the recovery sequence: COOP re-establishment, R1 sending New Group Mode rekeys to GMs, and GMs re-registering with R1 as Primary.\relax }{figure.caption.34}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {34}{\ignorespaces Expanded New Group Mode packet (exchange type 33) from R1 to a GM during the recovery sequence.\relax }}{34}{figure.caption.35}\protected@file@percent }
+\newlabel{fig:contents_new_group}{{34}{34}{Expanded New Group Mode packet (exchange type 33) from R1 to a GM during the recovery sequence.\relax }{figure.caption.35}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{34}{section.7}\protected@file@percent }
+\gdef \@abspage@last{35}

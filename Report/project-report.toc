@@ -31,6 +31,8 @@
 \contentsline {subsubsection}{\numberline {6.1.1}Overview}{21}{subsubsection.6.1.1}%
 \contentsline {subsubsection}{\numberline {6.1.2}COOP Configuration}{22}{subsubsection.6.1.2}%
 \contentsline {subsubsection}{\numberline {6.1.3}Steady-State Verification}{23}{subsubsection.6.1.3}%
-\contentsline {subsubsection}{\numberline {6.1.4}Failover Test and RSA Key Issue}{26}{subsubsection.6.1.4}%
-\contentsline {paragraph}{Root Cause}{29}{figure.caption.29}%
-\contentsline {section}{\numberline {7}Conclusion}{30}{section.7}%
+\contentsline {subsection}{\numberline {6.2}Failover Test -- First Attempt and Diagnosis}{26}{subsection.6.2}%
+\contentsline {subsubsection}{\numberline {6.2.1}Root Cause Diagnosis}{28}{subsubsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.3}Clean Failover Verification}{30}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Recovery -- R1 Returning as Primary}{33}{subsection.6.4}%
+\contentsline {section}{\numberline {7}Conclusion}{34}{section.7}%

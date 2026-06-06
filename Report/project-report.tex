@@ -789,69 +789,52 @@ contact it if the Primary becomes unavailable.
     \label{fig:coop_gm_steady}
 \end{figure}
 
-\subsubsection{Failover Test and RSA Key Issue}
+\subsection{Failover Test -- First Attempt and Diagnosis}
 
-To test failover, R1's \texttt{gi0/0} interface was shut down while a Wireshark 
-probe captured traffic on the R5-switch link. Figure~\ref{fig:coop_wireshark} 
-shows the capture. The early packets (numbered 6 through 83) are the periodic 
-COOP heartbeat announcements from R1 (\texttt{192.168.1.254}) to R5 
-(\texttt{192.168.1.252}), labelled as \textit{Informational} by Wireshark. 
-After packet 83 the heartbeats from R1 cease, corresponding to the moment the 
-interface was shut down. R5 then sends reply-request announcements attempting 
-to reach R1 (packets 132--224), and upon receiving no response promotes itself 
-to Primary and immediately sends \textit{New Group Mode} rekey messages 
-(exchange type 33) to all three GMs (packets 225--246), pushing itself as the 
-new active KS.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\linewidth]{../Images/wireshark overview coop reset up.png}
-    \caption{Wireshark capture on the R5-switch link. COOP heartbeats from R1 
-    stop after packet 83; R5 then sends New Group Mode rekeys to all GMs.}
-    \label{fig:coop_wireshark}
-\end{figure}
-
-The R5 console messages at the moment of transition are shown in 
-Figure~\ref{fig:coop_failover_console}. The first message confirms R1 became 
-unreachable; the second confirms R5 transitioned to Primary.
+To test the failover behaviour, R1's \texttt{gi0/0} interface was shut down 
+while Wireshark probes captured traffic on both the R1-switch and R5-switch 
+links. The KS-level transition worked immediately and correctly: within 30 
+seconds of R1 becoming unreachable, R5 produced the console messages shown in 
+Figure~\ref{fig:coop_failover_console}, confirming it detected the failure and 
+promoted itself to Primary.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.05\linewidth]{../Images/console messages on R5 after R1 down.png}
-    \caption{R5 console output at the moment of failover. R5 detects R1 as 
-    unreachable and promotes itself to Primary.}
+    \caption{R5 console at the moment of failover. R1 is declared unreachable 
+    and R5 transitions to Primary.}
     \label{fig:coop_failover_console}
 \end{figure}
 
-Figure~\ref{fig:coop_r5_primary} shows the COOP status on R5 immediately after 
-the transition, confirming \texttt{Local KS Role: Primary} and 
-\texttt{Peer KS Status: Dead}.
+Figure~\ref{fig:coop_r5_primary} confirms the COOP status on R5 after the 
+transition: \texttt{Local KS Role: Primary} and \texttt{Peer KS Status: Dead}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\linewidth]{../Images/sh crypto gdoi ks coop R5 after R1 shut.png}
-    \caption{\texttt{show crypto gdoi ks coop} on R5 after R1 failure. R5 has 
-    assumed the Primary role.}
+    \includegraphics[width=0.85\linewidth]{../Images/sh crypto gdoi ks coop R5 after R1 shut.png}
+    \caption{\texttt{show crypto gdoi ks coop} on R5 after R1 failure. R5 has assumed the Primary role.}
     \label{fig:coop_r5_primary}
 \end{figure}
 
-Despite the clean KS-level transition, the Group Members failed to complete 
-re-registration with R5. Figure~\ref{fig:coop_gm_fail} shows R4's state during 
-this period: \texttt{Registration status: Registering}, 
-\texttt{Attempted registration: 9}, and critically \texttt{Active TEK Number: 0}, 
-meaning R4 had lost its TEK and was unable to obtain a new one from R5. The same 
-state was observed on R2 and R3. The GM console logs showed repeated alternating 
-registration attempts between \texttt{192.168.1.254} and \texttt{192.168.1.252}, 
-neither succeeding.
+Figure~\ref{fig:coop_wireshark} shows the R5-switch capture. The early 
+Informational packets are the COOP heartbeats between R1 and R5 during normal 
+operation. After the heartbeats from R1 stop, R5 sends New Group Mode rekey 
+messages (exchange type 33) to all three GMs, announcing itself as the new 
+active Key Server.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\linewidth]{../Images/sh crypto dgoi R4 ks R5 fail.png}
-    \caption{\texttt{show crypto gdoi} on R4 during failed re-registration. 
-    Active TEK is 0 and registration attempts to R5 are failing. 
-    Also comparing with Figure~\ref{fig:coop_gm_steady} there is nothing under TEK policy.}
-    \label{fig:coop_gm_fail}
+    \includegraphics[width=0.85\linewidth]{../Images/wireshark overview coop reset up.png}
+    \caption{R5-switch Wireshark capture showing COOP heartbeats, R5 promotion, 
+    and New Group Mode rekeys to GMs.}
+    \label{fig:coop_wireshark}
 \end{figure}
+
+Despite the clean KS-level transition, the Group Members failed to complete 
+re-registration with R5. Figure~\ref{fig:coop_ks_members_fail} shows R5's 
+member table still reflecting the state synchronised from R1, with all GMs 
+listed as registered but with \texttt{Key Server ID: 192.168.1.254} — 
+no fresh registration with R5 had completed.
 
 \begin{figure}[H]
     \centering
@@ -864,34 +847,153 @@ neither succeeding.
         \centering
         \includegraphics[width=\linewidth]{../Images/sh crypto gdoi ks members R5 p2.png}
     \end{subfigure}
-    \caption{\texttt{show crypto gdoi ks members} on R5. GMs appear registered 
-    from the state synchronised with R1, but \texttt{Key Server ID} still shows 
-    \texttt{192.168.1.254}, indicating no fresh registration with R5 has 
-    completed.}
-    \label{fig:coop_ks_members}
+    \caption{\texttt{show crypto gdoi ks members} on R5 after first failover 
+    attempt. GMs appear registered from synchronised state but no fresh 
+    registration with R5 has completed.}
+    \label{fig:coop_ks_members_fail}
 \end{figure}
 
-\paragraph{Root Cause}
+\subsubsection{Root Cause Diagnosis}
 
-The failure was caused by an RSA key mismatch between the two Key Servers. 
-During the original GROUPKEY-PULL with R1, each GM received R1's RSA public key 
-and stored it as the trusted key for verifying rekey message signatures. When R5 
-promoted itself to Primary and sent New Group Mode rekey messages, it signed them 
-with its own independently generated RSA key pair. The GMs attempted to verify 
-these signatures using R1's public key, which naturally failed, causing every 
-rekey and re-registration attempt with R5 to be rejected.
+To diagnose the failure, \texttt{debug crypto isakmp} was enabled on R2 and 
+\texttt{clear crypto gdoi} was used to force an immediate re-registration 
+attempt. The debug output revealed two distinct problems occurring in sequence.
 
-This is a known and documented limitation of GETVPN COOP when RSA key pairs are 
-generated independently on each KS. Cisco's recommended solution is to deploy a 
-\textbf{Public Key Infrastructure (PKI)} with a Certificate Authority (CA): both 
-KSs enroll with the CA and receive signed certificates, and GMs trust any rekey 
-message signed by a certificate issued by that CA rather than trusting a specific 
-KS's public key. This means a GM will accept rekeys from either KS transparently, 
-which is precisely the behaviour required for seamless failover. Conveniently, 
-certificate-based authentication is also one of the extensions suggested in the 
-lab guide as a replacement for the pre-shared key authentication used in the base 
-configuration. The following section describes the PKI setup and the corrected 
-COOP failover.
+The first problem was that R2's re-registration timer had backed off to nearly 
+50 minutes after 10 failed attempts, so it was not actively retrying. When 
+forced, R2 first attempted to reach R1 at \texttt{192.168.1.254}, which 
+naturally failed since R1 was down (Figure~\ref{fig:debug_retransmit}). After 
+exhausting retransmits it fell through to trying R5 at \texttt{192.168.1.252}, 
+where the second and critical problem appeared (Figure~\ref{fig:debug_psk}):
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{../Images/debug_R2_psk_missing.png}
+    \caption{R2 debug output showing IKE Phase 1 retransmission attempts to 
+    R1 (\texttt{192.168.1.254}) failing with no response.}
+    \label{fig:debug_retransmit}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{../Images/debug_R2_psk_error.png}
+    \caption{R2 debug output showing the explicit error when attempting IKE 
+    Phase 1 with R5: \texttt{No pre-shared key with 192.168.1.252}.}
+    \label{fig:debug_psk}
+\end{figure}
+
+The error \texttt{No pre-shared key with 192.168.1.252} identifies the root 
+cause precisely: the GMs had a pre-shared key configured only for R1's address 
+(\texttt{192.168.1.254}), not for R5's address (\texttt{192.168.1.252}). 
+Without a matching credential, IKE Phase 1 cannot start and the GROUPKEY-PULL 
+exchange cannot take place. R5 was correctly promoted to Primary and correctly 
+sending rekey messages, but the GMs had no way to authenticate with it.
+
+The fix was straightforward — add the pre-shared key for R5's address on each 
+GM:
+
+\begin{configbox}
+R2(config)#crypto isakmp key saar address 192.168.1.252
+R3(config)#crypto isakmp key saar address 192.168.1.252
+R4(config)#crypto isakmp key saar address 192.168.1.252
+\end{configbox}
+
+This was a configuration omission rather than a fundamental limitation: the 
+same pre-shared key \texttt{saar} is used, simply extended to cover R5's 
+address in addition to R1's. In the original base configuration, GMs only 
+needed to authenticate with one KS, so only one address was configured. COOP 
+requires GMs to be able to authenticate with any KS in the group.
+
+\subsection{Clean Failover Verification}
+
+With the pre-shared key added on all GMs, the failover test was repeated. 
+R1's interface was shut down again. R5 promoted itself to Primary as before. 
+This time, when the GMs attempted re-registration with R5, IKE Phase 1 
+completed successfully and the full GROUPKEY-PULL exchange took place.
+
+Figures~\ref{fig:r2_reg_r5_p1} and \ref{fig:r2_reg_r5_p2} show R2's 
+\texttt{show crypto gdoi} output after successful re-registration with R5, 
+confirming \texttt{Registration status: Registered}, 
+\texttt{Registered with: 192.168.1.252}, and \texttt{Active TEK Number: 1}.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.65\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/R2 registered with R5 p1.png}
+    \end{subfigure}
+    \vspace{0.5em}
+    \begin{subfigure}[t]{0.65\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/R2 registered with R5 p2.png}
+    \end{subfigure}
+    \caption{\texttt{show crypto gdoi} on R2 after successful failover. Registered with R5 (\texttt{192.168.1.252}), TEK active.}
+    \label{fig:r2_reg_r5_p1}
+    \label{fig:r2_reg_r5_p2}
+\end{figure}
+
+Figure~\ref{fig:r5_members_success} shows R5's member table with all three 
+GMs now showing fresh registrations with \texttt{Key Server ID: 192.168.1.252}.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.65\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh gdoi members R5 success p1.png}
+    \end{subfigure}
+    \vspace{0.5em}
+    \begin{subfigure}[t]{0.65\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../Images/sh gdoi members R5 success p2.png}
+    \end{subfigure}
+    \caption{\texttt{show crypto gdoi ks members} on R5 after successful 
+    failover. All three GMs registered with R5 as the active Key Server.}
+    \label{fig:r5_members_success}
+\end{figure}
+
+Traffic encryption was verified by pinging from PC1 to PC2 and PC3 with R5 
+as the active Primary KS, shown in Figure~\ref{fig:ping_after_failover}. 
+Both pings succeeded, confirming that the GMs received a valid TEK from R5 
+and are encrypting traffic correctly.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/successful ping after failover test.png}
+    \caption{Successful pings from PC1 to PC2 and PC3 with R5 as Primary KS, 
+    confirming traffic encryption is operational after failover.}
+    \label{fig:ping_after_failover}
+\end{figure}
+
+\subsection{Recovery -- R1 Returning as Primary}
+
+When R1's interface was brought back up, it re-established the COOP channel 
+with R5 and reclaimed the Primary role due to its higher priority (100 vs 75). 
+Figure~\ref{fig:wireshark_recovery} shows the R1-switch capture at this moment: 
+R1 and R5 exchange Informational COOP announcements to re-establish the channel, 
+R1 then immediately sends New Group Mode rekey messages to all three GMs 
+(packets 75, 77, 79) announcing its return as Primary, and the GMs respond 
+with acknowledgements (Unknown 34). This is followed by fresh Identity 
+Protection (Main Mode) exchanges as the GMs re-register with R1.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/wireshark re-registration overview.png}
+    \caption{R1-switch capture showing the recovery sequence: COOP 
+    re-establishment, R1 sending New Group Mode rekeys to GMs, and GMs 
+    re-registering with R1 as Primary.}
+    \label{fig:wireshark_recovery}
+\end{figure}
+
+Figure~\ref{fig:contents_new_group} shows an expanded New Group Mode packet 
+from R1, confirming exchange type 33 and the direction R1 $\rightarrow$ GM.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/contents of new group msg.png}
+    \caption{Expanded New Group Mode packet (exchange type 33) from R1 to a 
+    GM during the recovery sequence.}
+    \label{fig:contents_new_group}
+\end{figure}
 
 % ======================================================================
 \section{Conclusion}

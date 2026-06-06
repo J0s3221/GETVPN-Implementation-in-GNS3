@@ -1,0 +1,56 @@
+! R1 & R5 Trustpoints
+ip domain-name getvpn.lab
+crypto pki trustpoint GETVPN_CA
+enrollment url http://192.168.1.253:80
+subject-name cn=R1,ou=lab,o=ist
+revocation-check none
+rsakeypair myRSAKeys
+exit
+
+ip domain-name getvpn.lab
+crypto pki trustpoint GETVPN_CA
+enrollment url http://192.168.1.253:80
+subject-name cn=R5,ou=lab,o=ist
+revocation-check none
+rsakeypair myRSAKeys
+exit
+
+! Authenticate KSs
+crypto pki authenticate GETVPN_CA
+
+! Enroll KSs
+crypto pki enroll GETVPN_CA
+
+! Enroll GMs (R2, R3 and R4)
+ip domain-name getvpn.lab
+crypto pki trustpoint GETVPN_CA
+enrollment url http://192.168.1.253:80
+subject-name cn=R2,ou=lab,o=ist
+revocation-check none
+exit
+crypto pki authenticate GETVPN_CA
+crypto pki enroll GETVPN_CA
+
+ip domain-name getvpn.lab
+crypto pki trustpoint GETVPN_CA
+enrollment url http://192.168.1.253:80
+subject-name cn=R3,ou=lab,o=ist
+revocation-check none
+exit
+crypto pki authenticate GETVPN_CA
+crypto pki enroll GETVPN_CA
+
+ip domain-name getvpn.lab
+crypto pki trustpoint GETVPN_CA
+enrollment url http://192.168.1.253:80
+subject-name cn=R4,ou=lab,o=ist
+revocation-check none
+exit
+crypto pki authenticate GETVPN_CA
+crypto pki enroll GETVPN_CA
+
+! Update GDOI rekey authentication KSs
+crypto gdoi group myGDOIGroup
+server local
+no rekey authentication mypubkey rsa myRSAKeys
+rekey authentication certificate GETVPN_CA
