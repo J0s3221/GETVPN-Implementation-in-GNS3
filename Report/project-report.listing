@@ -1,3 +1,1 @@
-R2(config)#crypto isakmp key saar address 192.168.1.252
-R3(config)#crypto isakmp key saar address 192.168.1.252
-R4(config)#crypto isakmp key saar address 192.168.1.252
+R1(gkm-local-server)# rekey authentication certificate GETVPN_CA

@@ -20,116 +20,149 @@
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \providecommand \oddpage@label [2]{}
 \babel@aux{english}{}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{section.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2}Topology and Base Configuration}{2}{section.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Project topology. R1 is the Key Server; R2, R3, and R4 are Group Members.\relax }}{3}{figure.caption.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{3}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Topology and Base Configuration}{3}{section.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Project topology. R1 is the Key Server; R2, R3, and R4 are Group Members.\relax }}{4}{figure.caption.2}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:topology}{{1}{3}{Project topology. R1 is the Key Server; R2, R3, and R4 are Group Members.\relax }{figure.caption.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}GETVPN Configuration}{3}{section.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Overview of the Configuration Model}{3}{subsection.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Key Server Configuration (R1)}{4}{subsection.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}IKE Phase 1 Policy}{4}{subsubsection.3.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}Transform Set and IPSec Profile}{4}{subsubsection.3.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.3}RSA Key Pair}{4}{subsubsection.3.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.4}Traffic Selector ACL}{4}{subsubsection.3.2.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.5}GDOI Group}{5}{subsubsection.3.2.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Group Member Configuration (R2, R3, R4)}{5}{subsection.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4}Verification}{6}{section.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Key Server Status}{6}{subsection.4.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \texttt  {show crypto gdoi} on the Key Server (R1). Three Group Members registered.\relax }}{7}{figure.caption.3}\protected@file@percent }
-\newlabel{fig:ks_gdoi}{{2}{7}{\texttt {show crypto gdoi} on the Key Server (R1). Three Group Members registered.\relax }{figure.caption.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \texttt  {show crypto gdoi ks members} on R1. All three GMs (\texttt  {192.168.1.2}, \texttt  {.3}, \texttt  {.4}) show \texttt  {GM State: Registered}.\relax }}{8}{figure.caption.4}\protected@file@percent }
-\newlabel{fig:ks_members}{{3}{8}{\texttt {show crypto gdoi ks members} on R1. All three GMs (\texttt {192.168.1.2}, \texttt {.3}, \texttt {.4}) show \texttt {GM State: Registered}.\relax }{figure.caption.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Group Member Status}{9}{subsection.4.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \texttt  {show crypto gdoi} on R2. Registration confirmed; TEK and KEK policies downloaded from KS.\relax }}{10}{figure.caption.5}\protected@file@percent }
-\newlabel{fig:gm_gdoi}{{4}{10}{\texttt {show crypto gdoi} on R2. Registration confirmed; TEK and KEK policies downloaded from KS.\relax }{figure.caption.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Lab Tasks}{11}{section.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}IKE and GROUPKEY-PULL Analysis}{11}{subsection.5.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Capture filtered on UDP port 848 before applying the ISAKMP decoder.\relax }}{11}{figure.caption.6}\protected@file@percent }
-\newlabel{fig:udp848raw}{{5}{11}{Capture filtered on UDP port 848 before applying the ISAKMP decoder.\relax }{figure.caption.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Capture filtered on UDP port 848 after applying the ISAKMP decoder.\relax }}{12}{figure.caption.7}\protected@file@percent }
-\newlabel{fig:udp848}{{6}{12}{Capture filtered on UDP port 848 after applying the ISAKMP decoder.\relax }{figure.caption.7}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.1}IKE Phase 1 -- Main Mode}{12}{subsubsection.5.1.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces First IKE Phase 1 message expanded. Note the null Responder SPI and \texttt  {Domain of Interpretation: GDOI (2)}.\relax }}{13}{figure.caption.8}\protected@file@percent }
-\newlabel{fig:ike_phase1}{{7}{13}{First IKE Phase 1 message expanded. Note the null Responder SPI and \texttt {Domain of Interpretation: GDOI (2)}.\relax }{figure.caption.8}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.2}GROUPKEY-PULL}{13}{subsubsection.5.1.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces GROUPKEY-PULL exchange (Quick Mode, exchange type 32) between R2 and the Key Server.\relax }}{14}{figure.caption.9}\protected@file@percent }
-\newlabel{fig:groupkey_p1}{{8}{14}{GROUPKEY-PULL exchange (Quick Mode, exchange type 32) between R2 and the Key Server.\relax }{figure.caption.9}{}}
-\newlabel{fig:groupkey_p2}{{8}{14}{GROUPKEY-PULL exchange (Quick Mode, exchange type 32) between R2 and the Key Server.\relax }{figure.caption.9}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3}Repeated Pattern Across All Group Members}{15}{subsubsection.5.1.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces 10-message registration sequence for R2 (packets 42--51).\relax }}{15}{figure.caption.10}\protected@file@percent }
-\newlabel{fig:r2_isakmp}{{9}{15}{10-message registration sequence for R2 (packets 42--51).\relax }{figure.caption.10}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces 10-message registration sequence for R3.\relax }}{15}{figure.caption.11}\protected@file@percent }
-\newlabel{fig:r3_isakmp}{{10}{15}{10-message registration sequence for R3.\relax }{figure.caption.11}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces 10-message registration sequence for R4.\relax }}{15}{figure.caption.12}\protected@file@percent }
-\newlabel{fig:r4_isakmp}{{11}{15}{10-message registration sequence for R4.\relax }{figure.caption.12}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}SPI Consistency Across Group Members}{15}{subsection.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.1}Wireshark Capture}{16}{subsubsection.5.2.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces ESP packets captured for PC1 $\rightarrow $ PC2 ping. All packets carry \texttt  {SPI=0x24FF23B1}.\relax }}{16}{figure.caption.13}\protected@file@percent }
-\newlabel{fig:esp_pc2}{{12}{16}{ESP packets captured for PC1 $\rightarrow $ PC2 ping. All packets carry \texttt {SPI=0x24FF23B1}.\relax }{figure.caption.13}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces ESP packets captured for PC1 $\rightarrow $ PC3 ping. Same SPI value despite different destination.\relax }}{16}{figure.caption.14}\protected@file@percent }
-\newlabel{fig:esp_pc3}{{13}{16}{ESP packets captured for PC1 $\rightarrow $ PC3 ping. Same SPI value despite different destination.\relax }{figure.caption.14}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2}CLI Verification}{17}{subsubsection.5.2.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces \texttt  {show crypto ipsec sa | include spi} across all Group Members showing that they all have the same SPI\relax }}{17}{figure.caption.15}\protected@file@percent }
-\newlabel{fig:cryptoipsecR2}{{14}{17}{\texttt {show crypto ipsec sa | include spi} across all Group Members showing that they all have the same SPI\relax }{figure.caption.15}{}}
-\newlabel{fig:cryptoipsecR3}{{14}{17}{\texttt {show crypto ipsec sa | include spi} across all Group Members showing that they all have the same SPI\relax }{figure.caption.15}{}}
-\newlabel{fig:cryptoipsecR4}{{14}{17}{\texttt {show crypto ipsec sa | include spi} across all Group Members showing that they all have the same SPI\relax }{figure.caption.15}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces \texttt  {show crypto gdoi ks policy} on R1 confirming the TEK SPI and policy distributed to all GMs.\relax }}{18}{figure.caption.16}\protected@file@percent }
-\newlabel{fig:ks_policy}{{15}{18}{\texttt {show crypto gdoi ks policy} on R1 confirming the TEK SPI and policy distributed to all GMs.\relax }{figure.caption.16}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.3}Why All SPIs Are Identical}{18}{subsubsection.5.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}TEK Rekey Observation}{18}{subsection.5.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Output of the command \texttt  {crypto gdoi ks rekey} in R1\relax }}{19}{figure.caption.17}\protected@file@percent }
-\newlabel{fig:forcerekey}{{16}{19}{Output of the command \texttt {crypto gdoi ks rekey} in R1\relax }{figure.caption.17}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces \texttt  {show crypto gdoi} on R1 showing the 900 second TEK lifetime in effect after to the manual rekey.\relax }}{19}{figure.caption.18}\protected@file@percent }
-\newlabel{fig:rekey_timer}{{17}{19}{\texttt {show crypto gdoi} on R1 showing the 900 second TEK lifetime in effect after to the manual rekey.\relax }{figure.caption.18}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.1}Rekey Messages in Wireshark}{19}{subsubsection.5.3.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Wireshark capture of the rekey event. Three unicast rekey messages from R1 (\texttt  {192.168.1.254}) to each GM, followed by acknowledgements.\relax }}{20}{figure.caption.19}\protected@file@percent }
-\newlabel{fig:rekey_wireshark}{{18}{20}{Wireshark capture of the rekey event. Three unicast rekey messages from R1 (\texttt {192.168.1.254}) to each GM, followed by acknowledgements.\relax }{figure.caption.19}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.2}Exchange Type}{20}{subsubsection.5.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.3}What Changed}{20}{subsubsection.5.3.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces \texttt  {show crypto ipsec sa | include spi} across all Group Members after the rekeying\relax }}{21}{figure.caption.20}\protected@file@percent }
-\newlabel{fig:cryptoipsecR2rekey}{{19}{21}{\texttt {show crypto ipsec sa | include spi} across all Group Members after the rekeying\relax }{figure.caption.20}{}}
-\newlabel{fig:cryptoipsecR3rekey}{{19}{21}{\texttt {show crypto ipsec sa | include spi} across all Group Members after the rekeying\relax }{figure.caption.20}{}}
-\newlabel{fig:cryptoipsecR4rekey}{{19}{21}{\texttt {show crypto ipsec sa | include spi} across all Group Members after the rekeying\relax }{figure.caption.20}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}GETVPN Extensions}{21}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}COOP Redundancy}{21}{subsection.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.1}Overview}{21}{subsubsection.6.1.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces Updated topology with R5 added as the Secondary Key Server.\relax }}{22}{figure.caption.21}\protected@file@percent }
-\newlabel{fig:coop_topology}{{20}{22}{Updated topology with R5 added as the Secondary Key Server.\relax }{figure.caption.21}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.2}COOP Configuration}{22}{subsubsection.6.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.3}Steady-State Verification}{23}{subsubsection.6.1.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces \texttt  {show crypto gdoi ks coop} on R1. Primary role confirmed, R5 visible as Secondary peer.\relax }}{23}{figure.caption.22}\protected@file@percent }
-\newlabel{fig:coop_r1}{{21}{23}{\texttt {show crypto gdoi ks coop} on R1. Primary role confirmed, R5 visible as Secondary peer.\relax }{figure.caption.22}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces \texttt  {show crypto gdoi ks coop} on R5. Secondary role confirmed, R1 visible as Primary peer.\relax }}{24}{figure.caption.23}\protected@file@percent }
-\newlabel{fig:coop_r5}{{22}{24}{\texttt {show crypto gdoi ks coop} on R5. Secondary role confirmed, R1 visible as Primary peer.\relax }{figure.caption.23}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces \texttt  {show crypto gdoi} on R4 under normal COOP operation. Registered with R1 as Primary, both KS addresses present in the server list, TEK active.\relax }}{25}{figure.caption.24}\protected@file@percent }
-\newlabel{fig:coop_gm_steady}{{23}{25}{\texttt {show crypto gdoi} on R4 under normal COOP operation. Registered with R1 as Primary, both KS addresses present in the server list, TEK active.\relax }{figure.caption.24}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Failover Test -- First Attempt and Diagnosis}{26}{subsection.6.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {24}{\ignorespaces R5 console at the moment of failover. R1 is declared unreachable and R5 transitions to Primary.\relax }}{26}{figure.caption.25}\protected@file@percent }
-\newlabel{fig:coop_failover_console}{{24}{26}{R5 console at the moment of failover. R1 is declared unreachable and R5 transitions to Primary.\relax }{figure.caption.25}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {25}{\ignorespaces \texttt  {show crypto gdoi ks coop} on R5 after R1 failure. R5 has assumed the Primary role.\relax }}{26}{figure.caption.26}\protected@file@percent }
-\newlabel{fig:coop_r5_primary}{{25}{26}{\texttt {show crypto gdoi ks coop} on R5 after R1 failure. R5 has assumed the Primary role.\relax }{figure.caption.26}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {26}{\ignorespaces R5-switch Wireshark capture showing COOP heartbeats, R5 promotion, and New Group Mode rekeys to GMs.\relax }}{27}{figure.caption.27}\protected@file@percent }
-\newlabel{fig:coop_wireshark}{{26}{27}{R5-switch Wireshark capture showing COOP heartbeats, R5 promotion, and New Group Mode rekeys to GMs.\relax }{figure.caption.27}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {27}{\ignorespaces \texttt  {show crypto gdoi ks members} on R5 after first failover attempt. GMs appear registered from synchronised state but no fresh registration with R5 has completed.\relax }}{28}{figure.caption.28}\protected@file@percent }
-\newlabel{fig:coop_ks_members_fail}{{27}{28}{\texttt {show crypto gdoi ks members} on R5 after first failover attempt. GMs appear registered from synchronised state but no fresh registration with R5 has completed.\relax }{figure.caption.28}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.1}Root Cause Diagnosis}{28}{subsubsection.6.2.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {28}{\ignorespaces R2 debug output showing IKE Phase 1 retransmission attempts to R1 (\texttt  {192.168.1.254}) failing with no response.\relax }}{29}{figure.caption.29}\protected@file@percent }
-\newlabel{fig:debug_retransmit}{{28}{29}{R2 debug output showing IKE Phase 1 retransmission attempts to R1 (\texttt {192.168.1.254}) failing with no response.\relax }{figure.caption.29}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {29}{\ignorespaces R2 debug output showing the explicit error when attempting IKE Phase 1 with R5: \texttt  {No pre-shared key with 192.168.1.252}.\relax }}{29}{figure.caption.30}\protected@file@percent }
-\newlabel{fig:debug_psk}{{29}{29}{R2 debug output showing the explicit error when attempting IKE Phase 1 with R5: \texttt {No pre-shared key with 192.168.1.252}.\relax }{figure.caption.30}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Clean Failover Verification}{30}{subsection.6.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {30}{\ignorespaces \texttt  {show crypto gdoi} on R2 after successful failover. Registered with R5 (\texttt  {192.168.1.252}), TEK active.\relax }}{31}{figure.caption.31}\protected@file@percent }
-\newlabel{fig:r2_reg_r5_p1}{{30}{31}{\texttt {show crypto gdoi} on R2 after successful failover. Registered with R5 (\texttt {192.168.1.252}), TEK active.\relax }{figure.caption.31}{}}
-\newlabel{fig:r2_reg_r5_p2}{{30}{31}{\texttt {show crypto gdoi} on R2 after successful failover. Registered with R5 (\texttt {192.168.1.252}), TEK active.\relax }{figure.caption.31}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {31}{\ignorespaces \texttt  {show crypto gdoi ks members} on R5 after successful failover. All three GMs registered with R5 as the active Key Server.\relax }}{32}{figure.caption.32}\protected@file@percent }
-\newlabel{fig:r5_members_success}{{31}{32}{\texttt {show crypto gdoi ks members} on R5 after successful failover. All three GMs registered with R5 as the active Key Server.\relax }{figure.caption.32}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {32}{\ignorespaces Successful pings from PC1 to PC2 and PC3 with R5 as Primary KS, confirming traffic encryption is operational after failover.\relax }}{32}{figure.caption.33}\protected@file@percent }
-\newlabel{fig:ping_after_failover}{{32}{32}{Successful pings from PC1 to PC2 and PC3 with R5 as Primary KS, confirming traffic encryption is operational after failover.\relax }{figure.caption.33}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Recovery -- R1 Returning as Primary}{33}{subsection.6.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {33}{\ignorespaces R1-switch capture showing the recovery sequence: COOP re-establishment, R1 sending New Group Mode rekeys to GMs, and GMs re-registering with R1 as Primary.\relax }}{33}{figure.caption.34}\protected@file@percent }
-\newlabel{fig:wireshark_recovery}{{33}{33}{R1-switch capture showing the recovery sequence: COOP re-establishment, R1 sending New Group Mode rekeys to GMs, and GMs re-registering with R1 as Primary.\relax }{figure.caption.34}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {34}{\ignorespaces Expanded New Group Mode packet (exchange type 33) from R1 to a GM during the recovery sequence.\relax }}{34}{figure.caption.35}\protected@file@percent }
-\newlabel{fig:contents_new_group}{{34}{34}{Expanded New Group Mode packet (exchange type 33) from R1 to a GM during the recovery sequence.\relax }{figure.caption.35}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{34}{section.7}\protected@file@percent }
-\gdef \@abspage@last{35}
+\newlabel{fig:topology}{{1}{4}{Project topology. R1 is the Key Server; R2, R3, and R4 are Group Members.\relax }{figure.caption.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}GETVPN Configuration}{4}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Overview of the Configuration Model}{4}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Key Server Configuration (R1)}{5}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}IKE Phase 1 Policy}{5}{subsubsection.3.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}Transform Set and IPSec Profile}{5}{subsubsection.3.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.3}RSA Key Pair}{5}{subsubsection.3.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.4}Traffic Selector ACL}{5}{subsubsection.3.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.5}GDOI Group}{6}{subsubsection.3.2.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Group Member Configuration (R2, R3, R4)}{6}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Verification}{7}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Key Server Status}{7}{subsection.4.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \texttt  {show crypto gdoi} on the Key Server (R1). Three Group Members registered.\relax }}{8}{figure.caption.3}\protected@file@percent }
+\newlabel{fig:ks_gdoi}{{2}{8}{\texttt {show crypto gdoi} on the Key Server (R1). Three Group Members registered.\relax }{figure.caption.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \texttt  {show crypto gdoi ks members} on R1. All three GMs (\texttt  {192.168.1.2}, \texttt  {.3}, \texttt  {.4}) show \texttt  {GM State: Registered}.\relax }}{9}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:ks_members}{{3}{9}{\texttt {show crypto gdoi ks members} on R1. All three GMs (\texttt {192.168.1.2}, \texttt {.3}, \texttt {.4}) show \texttt {GM State: Registered}.\relax }{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Group Member Status}{10}{subsection.4.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \texttt  {show crypto gdoi} on R2. Registration confirmed; TEK and KEK policies downloaded from KS.\relax }}{11}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:gm_gdoi}{{4}{11}{\texttt {show crypto gdoi} on R2. Registration confirmed; TEK and KEK policies downloaded from KS.\relax }{figure.caption.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Lab Tasks}{12}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}IKE and GROUPKEY-PULL Analysis}{12}{subsection.5.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Capture filtered on UDP port 848 before applying the ISAKMP decoder.\relax }}{12}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:udp848raw}{{5}{12}{Capture filtered on UDP port 848 before applying the ISAKMP decoder.\relax }{figure.caption.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Capture filtered on UDP port 848 after applying the ISAKMP decoder.\relax }}{13}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:udp848}{{6}{13}{Capture filtered on UDP port 848 after applying the ISAKMP decoder.\relax }{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.1}IKE Phase 1 -- Main Mode}{13}{subsubsection.5.1.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces First IKE Phase 1 message expanded. Note the null Responder SPI and \texttt  {Domain of Interpretation: GDOI (2)}.\relax }}{14}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:ike_phase1}{{7}{14}{First IKE Phase 1 message expanded. Note the null Responder SPI and \texttt {Domain of Interpretation: GDOI (2)}.\relax }{figure.caption.8}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.2}GROUPKEY-PULL}{14}{subsubsection.5.1.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces GROUPKEY-PULL exchange (Quick Mode, exchange type 32) between R2 and the Key Server.\relax }}{15}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:groupkey_p1}{{8}{15}{GROUPKEY-PULL exchange (Quick Mode, exchange type 32) between R2 and the Key Server.\relax }{figure.caption.9}{}}
+\newlabel{fig:groupkey_p2}{{8}{15}{GROUPKEY-PULL exchange (Quick Mode, exchange type 32) between R2 and the Key Server.\relax }{figure.caption.9}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3}Repeated Pattern Across All Group Members}{16}{subsubsection.5.1.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces 10-message registration sequence for R2 (packets 42--51).\relax }}{16}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:r2_isakmp}{{9}{16}{10-message registration sequence for R2 (packets 42--51).\relax }{figure.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces 10-message registration sequence for R3.\relax }}{16}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:r3_isakmp}{{10}{16}{10-message registration sequence for R3.\relax }{figure.caption.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces 10-message registration sequence for R4.\relax }}{16}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:r4_isakmp}{{11}{16}{10-message registration sequence for R4.\relax }{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}SPI Consistency Across Group Members}{16}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.1}Wireshark Capture}{17}{subsubsection.5.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces ESP packets captured for PC1 $\rightarrow $ PC2 ping. All packets carry \texttt  {SPI=0x24FF23B1}.\relax }}{17}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:esp_pc2}{{12}{17}{ESP packets captured for PC1 $\rightarrow $ PC2 ping. All packets carry \texttt {SPI=0x24FF23B1}.\relax }{figure.caption.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces ESP packets captured for PC1 $\rightarrow $ PC3 ping. Same SPI value despite different destination.\relax }}{17}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:esp_pc3}{{13}{17}{ESP packets captured for PC1 $\rightarrow $ PC3 ping. Same SPI value despite different destination.\relax }{figure.caption.14}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2}CLI Verification}{18}{subsubsection.5.2.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces \texttt  {show crypto ipsec sa | include spi} across all Group Members showing that they all have the same SPI\relax }}{18}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:cryptoipsecR2}{{14}{18}{\texttt {show crypto ipsec sa | include spi} across all Group Members showing that they all have the same SPI\relax }{figure.caption.15}{}}
+\newlabel{fig:cryptoipsecR3}{{14}{18}{\texttt {show crypto ipsec sa | include spi} across all Group Members showing that they all have the same SPI\relax }{figure.caption.15}{}}
+\newlabel{fig:cryptoipsecR4}{{14}{18}{\texttt {show crypto ipsec sa | include spi} across all Group Members showing that they all have the same SPI\relax }{figure.caption.15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces \texttt  {show crypto gdoi ks policy} on R1 confirming the TEK SPI and policy distributed to all GMs.\relax }}{19}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:ks_policy}{{15}{19}{\texttt {show crypto gdoi ks policy} on R1 confirming the TEK SPI and policy distributed to all GMs.\relax }{figure.caption.16}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.3}Why All SPIs Are Identical}{19}{subsubsection.5.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}TEK Rekey Observation}{19}{subsection.5.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Output of the command \texttt  {crypto gdoi ks rekey} in R1\relax }}{20}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:forcerekey}{{16}{20}{Output of the command \texttt {crypto gdoi ks rekey} in R1\relax }{figure.caption.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces \texttt  {show crypto gdoi} on R1 showing the 900 second TEK lifetime in effect after to the manual rekey.\relax }}{20}{figure.caption.18}\protected@file@percent }
+\newlabel{fig:rekey_timer}{{17}{20}{\texttt {show crypto gdoi} on R1 showing the 900 second TEK lifetime in effect after to the manual rekey.\relax }{figure.caption.18}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.1}Rekey Messages in Wireshark}{20}{subsubsection.5.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Wireshark capture of the rekey event. Three unicast rekey messages from R1 (\texttt  {192.168.1.254}) to each GM, followed by acknowledgements.\relax }}{21}{figure.caption.19}\protected@file@percent }
+\newlabel{fig:rekey_wireshark}{{18}{21}{Wireshark capture of the rekey event. Three unicast rekey messages from R1 (\texttt {192.168.1.254}) to each GM, followed by acknowledgements.\relax }{figure.caption.19}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.2}Exchange Type}{21}{subsubsection.5.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.3}What Changed}{21}{subsubsection.5.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces \texttt  {show crypto ipsec sa | include spi} across all Group Members after the rekeying\relax }}{22}{figure.caption.20}\protected@file@percent }
+\newlabel{fig:cryptoipsecR2rekey}{{19}{22}{\texttt {show crypto ipsec sa | include spi} across all Group Members after the rekeying\relax }{figure.caption.20}{}}
+\newlabel{fig:cryptoipsecR3rekey}{{19}{22}{\texttt {show crypto ipsec sa | include spi} across all Group Members after the rekeying\relax }{figure.caption.20}{}}
+\newlabel{fig:cryptoipsecR4rekey}{{19}{22}{\texttt {show crypto ipsec sa | include spi} across all Group Members after the rekeying\relax }{figure.caption.20}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}GETVPN Extensions}{22}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}COOP Redundancy}{22}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.1}Overview}{22}{subsubsection.6.1.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces Updated topology with R5 added as the Secondary Key Server.\relax }}{23}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:coop_topology}{{20}{23}{Updated topology with R5 added as the Secondary Key Server.\relax }{figure.caption.21}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.2}COOP Configuration}{23}{subsubsection.6.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.3}Steady-State Verification}{24}{subsubsection.6.1.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces \texttt  {show crypto gdoi ks coop} on R1. Primary role confirmed, R5 visible as Secondary peer.\relax }}{24}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:coop_r1}{{21}{24}{\texttt {show crypto gdoi ks coop} on R1. Primary role confirmed, R5 visible as Secondary peer.\relax }{figure.caption.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces \texttt  {show crypto gdoi ks coop} on R5. Secondary role confirmed, R1 visible as Primary peer.\relax }}{25}{figure.caption.23}\protected@file@percent }
+\newlabel{fig:coop_r5}{{22}{25}{\texttt {show crypto gdoi ks coop} on R5. Secondary role confirmed, R1 visible as Primary peer.\relax }{figure.caption.23}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces \texttt  {show crypto gdoi} on R4 under normal COOP operation. Registered with R1 as Primary, both KS addresses present in the server list, TEK active.\relax }}{26}{figure.caption.24}\protected@file@percent }
+\newlabel{fig:coop_gm_steady}{{23}{26}{\texttt {show crypto gdoi} on R4 under normal COOP operation. Registered with R1 as Primary, both KS addresses present in the server list, TEK active.\relax }{figure.caption.24}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Failover Test -- First Attempt and Diagnosis}{27}{subsection.6.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {24}{\ignorespaces R5 console at the moment of failover. R1 is declared unreachable and R5 transitions to Primary.\relax }}{27}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:coop_failover_console}{{24}{27}{R5 console at the moment of failover. R1 is declared unreachable and R5 transitions to Primary.\relax }{figure.caption.25}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {25}{\ignorespaces \texttt  {show crypto gdoi ks coop} on R5 after R1 failure. R5 has assumed the Primary role.\relax }}{27}{figure.caption.26}\protected@file@percent }
+\newlabel{fig:coop_r5_primary}{{25}{27}{\texttt {show crypto gdoi ks coop} on R5 after R1 failure. R5 has assumed the Primary role.\relax }{figure.caption.26}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {26}{\ignorespaces R5-switch capture at the moment of failover. R5 sends unanswered COOP announcements to R1, then New Group Mode rekeys to GMs. No subsequent IKE exchanges occur, indicating GMs could not re-register.\relax }}{28}{figure.caption.27}\protected@file@percent }
+\newlabel{fig:coop_wireshark}{{26}{28}{R5-switch capture at the moment of failover. R5 sends unanswered COOP announcements to R1, then New Group Mode rekeys to GMs. No subsequent IKE exchanges occur, indicating GMs could not re-register.\relax }{figure.caption.27}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {27}{\ignorespaces \texttt  {show crypto gdoi ks members} on R5 after first failover attempt. GMs appear registered from synchronised state but no fresh registration with R5 has completed.\relax }}{29}{figure.caption.28}\protected@file@percent }
+\newlabel{fig:coop_ks_members_fail}{{27}{29}{\texttt {show crypto gdoi ks members} on R5 after first failover attempt. GMs appear registered from synchronised state but no fresh registration with R5 has completed.\relax }{figure.caption.28}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.1}Root Cause Diagnosis}{29}{subsubsection.6.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {28}{\ignorespaces R2 debug output showing IKE Phase 1 retransmission attempts to R1 (\texttt  {192.168.1.254}) failing with no response.\relax }}{30}{figure.caption.29}\protected@file@percent }
+\newlabel{fig:debug_retransmit}{{28}{30}{R2 debug output showing IKE Phase 1 retransmission attempts to R1 (\texttt {192.168.1.254}) failing with no response.\relax }{figure.caption.29}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {29}{\ignorespaces R2 debug output showing the explicit error when attempting IKE Phase 1 with R5: \texttt  {No pre-shared key with 192.168.1.252}.\relax }}{30}{figure.caption.30}\protected@file@percent }
+\newlabel{fig:debug_psk}{{29}{30}{R2 debug output showing the explicit error when attempting IKE Phase 1 with R5: \texttt {No pre-shared key with 192.168.1.252}.\relax }{figure.caption.30}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Clean Failover Verification}{31}{subsection.6.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {30}{\ignorespaces R5-switch capture during successful failover. New Group Mode rekeys are followed by IKE Main Mode exchanges, confirming GMs completed re-registration with R5.\relax }}{31}{figure.caption.31}\protected@file@percent }
+\newlabel{fig:wireshark_failover_success}{{30}{31}{R5-switch capture during successful failover. New Group Mode rekeys are followed by IKE Main Mode exchanges, confirming GMs completed re-registration with R5.\relax }{figure.caption.31}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {31}{\ignorespaces \texttt  {show crypto gdoi} on R2 after successful failover. Registered with R5 (\texttt  {192.168.1.252}), TEK active.\relax }}{32}{figure.caption.32}\protected@file@percent }
+\newlabel{fig:r2_reg_r5_p1}{{31}{32}{\texttt {show crypto gdoi} on R2 after successful failover. Registered with R5 (\texttt {192.168.1.252}), TEK active.\relax }{figure.caption.32}{}}
+\newlabel{fig:r2_reg_r5_p2}{{31}{32}{\texttt {show crypto gdoi} on R2 after successful failover. Registered with R5 (\texttt {192.168.1.252}), TEK active.\relax }{figure.caption.32}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {32}{\ignorespaces \texttt  {show crypto gdoi ks members} on R5 after successful failover. All three GMs registered with R5 as the active Key Server.\relax }}{33}{figure.caption.33}\protected@file@percent }
+\newlabel{fig:r5_members_success}{{32}{33}{\texttt {show crypto gdoi ks members} on R5 after successful failover. All three GMs registered with R5 as the active Key Server.\relax }{figure.caption.33}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {33}{\ignorespaces Successful pings from PC1 to PC2 and PC3 with R5 as Primary KS, confirming traffic encryption is operational after failover.\relax }}{33}{figure.caption.34}\protected@file@percent }
+\newlabel{fig:ping_after_failover}{{33}{33}{Successful pings from PC1 to PC2 and PC3 with R5 as Primary KS, confirming traffic encryption is operational after failover.\relax }{figure.caption.34}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Recovery -- R1 Returning as Primary}{34}{subsection.6.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {34}{\ignorespaces R1-switch capture showing the recovery sequence: COOP re-establishment, R1 sending New Group Mode rekeys to GMs, and GMs re-registering with R1 as Primary.\relax }}{34}{figure.caption.35}\protected@file@percent }
+\newlabel{fig:wireshark_recovery}{{34}{34}{R1-switch capture showing the recovery sequence: COOP re-establishment, R1 sending New Group Mode rekeys to GMs, and GMs re-registering with R1 as Primary.\relax }{figure.caption.35}{}}
+\citation{cisco_coop}
+\@writefile{lof}{\contentsline {figure}{\numberline {35}{\ignorespaces Expanded New Group Mode packet (exchange type 33) from R1 to a GM during the recovery sequence.\relax }}{35}{figure.caption.36}\protected@file@percent }
+\newlabel{fig:contents_new_group}{{35}{35}{Expanded New Group Mode packet (exchange type 33) from R1 to a GM during the recovery sequence.\relax }{figure.caption.36}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}GETVPN Extension: PKI and Certificate Authority}{35}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Motivation}{35}{subsection.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}CA Server Configuration}{36}{subsection.7.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {36}{\ignorespaces Updated topology with the CA server added at \texttt  {192.168.1.253}.\relax }}{36}{figure.caption.37}\protected@file@percent }
+\newlabel{fig:coop_ca_topology}{{36}{36}{Updated topology with the CA server added at \texttt {192.168.1.253}.\relax }{figure.caption.37}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Router Enrollment}{37}{subsection.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.1}Enrollment Traffic Analysis}{37}{subsubsection.7.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {37}{\ignorespaces Wireshark capture of R1's \texttt  {crypto pki authenticate} exchange. R1 opens a TCP connection to the CA on port 80 and retrieves the CA certificate over HTTP.\relax }}{37}{figure.caption.38}\protected@file@percent }
+\newlabel{fig:wireshark_auth}{{37}{37}{Wireshark capture of R1's \texttt {crypto pki authenticate} exchange. R1 opens a TCP connection to the CA on port 80 and retrieves the CA certificate over HTTP.\relax }{figure.caption.38}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {38}{\ignorespaces Wireshark capture of R1's \texttt  {crypto pki enroll} exchange. R1 submits its CSR via HTTP POST and receives the signed certificate in the CA's response.\relax }}{38}{figure.caption.39}\protected@file@percent }
+\newlabel{fig:wireshark_enroll}{{38}{38}{Wireshark capture of R1's \texttt {crypto pki enroll} exchange. R1 submits its CSR via HTTP POST and receives the signed certificate in the CA's response.\relax }{figure.caption.39}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {39}{\ignorespaces HTTP GET request from R1 to the CA: \texttt  {operation=GetCACert\&message=GETVPN\_CA}.\relax }}{38}{figure.caption.40}\protected@file@percent }
+\newlabel{fig:pkt55}{{39}{38}{HTTP GET request from R1 to the CA: \texttt {operation=GetCACert\&message=GETVPN\_CA}.\relax }{figure.caption.40}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {40}{\ignorespaces CA response delivering its certificate: \texttt  {200 OK (application/x-x509-ca-cert)}.\relax }}{39}{figure.caption.41}\protected@file@percent }
+\newlabel{fig:pkt58}{{40}{39}{CA response delivering its certificate: \texttt {200 OK (application/x-x509-ca-cert)}.\relax }{figure.caption.41}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {41}{\ignorespaces HTTP GET from R1 carrying the base64-encoded CSR (\texttt  {operation=PKIOperation}).\relax }}{39}{figure.caption.42}\protected@file@percent }
+\newlabel{fig:pkt182}{{41}{39}{HTTP GET from R1 carrying the base64-encoded CSR (\texttt {operation=PKIOperation}).\relax }{figure.caption.42}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {42}{\ignorespaces CA response delivering the signed certificate: \texttt  {200 OK (application/x-pki-message)}.\relax }}{40}{figure.caption.43}\protected@file@percent }
+\newlabel{fig:pkt189}{{42}{40}{CA response delivering the signed certificate: \texttt {200 OK (application/x-pki-message)}.\relax }{figure.caption.43}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.2}Certificate Verification}{40}{subsubsection.7.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {43}{\ignorespaces \texttt  {crypto pki authenticate GETVPN\_CA} on R1. The CA certificate fingerprint is displayed for verification before acceptance.\relax }}{40}{figure.caption.44}\protected@file@percent }
+\newlabel{fig:pki_authenticate_r1}{{43}{40}{\texttt {crypto pki authenticate GETVPN\_CA} on R1. The CA certificate fingerprint is displayed for verification before acceptance.\relax }{figure.caption.44}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {44}{\ignorespaces \texttt  {show crypto pki certificates} on R1. Router certificate (serial 02) and CA certificate (serial 01) both available.\relax }}{41}{figure.caption.45}\protected@file@percent }
+\newlabel{fig:pki_certs_r1}{{44}{41}{\texttt {show crypto pki certificates} on R1. Router certificate (serial 02) and CA certificate (serial 01) both available.\relax }{figure.caption.45}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {45}{\ignorespaces \texttt  {show crypto pki certificates} on R5. Router certificate (serial 03) and CA certificate (serial 01) both available.\relax }}{42}{figure.caption.46}\protected@file@percent }
+\newlabel{fig:pki_certs_r5}{{45}{42}{\texttt {show crypto pki certificates} on R5. Router certificate (serial 03) and CA certificate (serial 01) both available.\relax }{figure.caption.46}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}IOS Version Limitation}{42}{subsection.7.4}\protected@file@percent }
+\bibcite{cisco_coop}{1}
+\@writefile{lof}{\contentsline {figure}{\numberline {46}{\ignorespaces \texttt  {rekey authentication certificate} rejected on IOS 15.7(3)M3. Only \texttt  {mypubkey} is available, confirming that certificate-based rekey signing is not supported on this IOS version.\relax }}{43}{figure.caption.47}\protected@file@percent }
+\newlabel{fig:rekey_cert_unsupported}{{46}{43}{\texttt {rekey authentication certificate} rejected on IOS 15.7(3)M3. Only \texttt {mypubkey} is available, confirming that certificate-based rekey signing is not supported on this IOS version.\relax }{figure.caption.47}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{43}{section.8}\protected@file@percent }
+\gdef \@abspage@last{44}

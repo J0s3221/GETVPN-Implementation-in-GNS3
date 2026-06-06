@@ -816,17 +816,20 @@ transition: \texttt{Local KS Role: Primary} and \texttt{Peer KS Status: Dead}.
     \label{fig:coop_r5_primary}
 \end{figure}
 
-Figure~\ref{fig:coop_wireshark} shows the R5-switch capture. The early 
-Informational packets are the COOP heartbeats between R1 and R5 during normal 
-operation. After the heartbeats from R1 stop, R5 sends New Group Mode rekey 
-messages (exchange type 33) to all three GMs, announcing itself as the new 
-active Key Server.
+Figure~\ref{fig:coop_wireshark} shows the R5-switch capture at the moment of 
+failover. The early Informational packets show R5 sending COOP announcement 
+messages to R1 with no replies — R1 is already unreachable. R5 then sends New 
+Group Mode rekey messages (exchange type 33) to all three GMs announcing itself 
+as the new active Key Server. Notably, no IKE Main Mode or GROUPKEY-PULL 
+exchanges follow — the GMs received the rekey messages but could not complete 
+re-registration with R5, as analysed in the following subsection.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\linewidth]{../Images/wireshark overview coop reset up.png}
-    \caption{R5-switch Wireshark capture showing COOP heartbeats, R5 promotion, 
-    and New Group Mode rekeys to GMs.}
+    \caption{R5-switch capture at the moment of failover. R5 sends unanswered 
+    COOP announcements to R1, then New Group Mode rekeys to GMs. No subsequent 
+    IKE exchanges occur, indicating GMs could not re-register.}
     \label{fig:coop_wireshark}
 \end{figure}
 
@@ -910,6 +913,21 @@ With the pre-shared key added on all GMs, the failover test was repeated.
 R1's interface was shut down again. R5 promoted itself to Primary as before. 
 This time, when the GMs attempted re-registration with R5, IKE Phase 1 
 completed successfully and the full GROUPKEY-PULL exchange took place.
+
+Figure~\ref{fig:wireshark_failover_success} shows the R5-switch capture during 
+the successful failover test. In contrast to the first attempt, New Group Mode 
+rekeys from R5 are now followed by full IKE Main Mode exchanges between R5 and 
+each GM, confirming that IKE Phase 1 completed and the GROUPKEY-PULL took place 
+successfully.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/wiresharkoveriew after failover test success.png}
+    \caption{R5-switch capture during successful failover. New Group Mode rekeys 
+    are followed by IKE Main Mode exchanges, confirming GMs completed 
+    re-registration with R5.}
+    \label{fig:wireshark_failover_success}
+\end{figure}
 
 Figures~\ref{fig:r2_reg_r5_p1} and \ref{fig:r2_reg_r5_p2} show R2's 
 \texttt{show crypto gdoi} output after successful re-registration with R5, 
@@ -995,6 +1013,229 @@ from R1, confirming exchange type 33 and the direction R1 $\rightarrow$ GM.
     \label{fig:contents_new_group}
 \end{figure}
 
+\section{GETVPN Extension: PKI and Certificate Authority}
+
+\subsection{Motivation}
+
+As established in the COOP section, the pre-shared key authentication model 
+requires each GM to have a manually configured key for every KS address. While 
+this is manageable in a small lab, it presents a scalability problem in larger 
+deployments and does not address a deeper issue: when a Secondary KS takes over, 
+GMs must trust its rekey signatures. With independent RSA key pairs on each KS, 
+this requires GMs to know each KS's public key in advance. The correct 
+production solution is to deploy a \textbf{Public Key Infrastructure (PKI)} 
+with a Certificate Authority (CA): all routers enroll with the CA, receive 
+signed certificates, and trust any rekey message signed by a certificate issued 
+by that CA. This removes the dependency on any specific KS's key and enables 
+transparent failover. Certificate-based authentication is also listed in the 
+lab guide as a suggested extension to replace the pre-shared key model used in 
+the base configuration.
+
+The COOP configuration in this section was informed by Cisco's official 
+documentation on deploying GETVPN with cooperative key servers~\cite{cisco_coop}.
+
+\subsection{CA Server Configuration}
+
+A dedicated CA router was added to the topology at address 
+\texttt{192.168.1.253}, connected to the shared \texttt{192.168.1.0/24} 
+segment and participating in OSPF. The updated topology is shown in 
+Figure~\ref{fig:coop_ca_topology}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../Images/topology COOP CA.png}
+    \caption{Updated topology with the CA server added at 
+    \texttt{192.168.1.253}.}
+    \label{fig:coop_ca_topology}
+\end{figure}
+
+The CA server was configured using the IOS Certificate Authority feature, which 
+allows a Cisco router to act as a fully functional CA without requiring external 
+software. The configuration is as follows:
+
+\begin{configbox}
+CA(config)# ip domain-name getvpn.lab
+CA(config)# crypto key generate rsa modulus 2048 label CA_KEY
+CA(config)# ip http server
+CA(config)# crypto pki server GETVPN_CA
+CA(cs-server)# issuer-name cn=GETVPN_CA,ou=lab,o=ist
+CA(cs-server)# grant auto
+CA(cs-server)# no shutdown
+\end{configbox}
+
+The \texttt{grant auto} directive causes the CA to approve enrollment requests 
+automatically, which is appropriate for a lab environment. The \texttt{ip http 
+server} command is required because IOS CA uses HTTP as the transport for the 
+SCEP (Simple Certificate Enrollment Protocol) exchanges. The CA was verified 
+with \texttt{show crypto pki server}, which confirmed \texttt{Status: enabled}.
+
+\subsection{Router Enrollment}
+
+Each router — R1, R5, and all three GMs — was enrolled with the CA using the 
+following process. First, a trustpoint was configured pointing to the CA:
+
+\begin{configbox}
+Rx(config)# ip domain-name getvpn.lab
+Rx(config)# crypto pki trustpoint GETVPN_CA
+Rx(ca-trustpoint)# enrollment url http://192.168.1.253:80
+Rx(ca-trustpoint)# subject-name cn=Rx,ou=lab,o=ist
+Rx(ca-trustpoint)# revocation-check none
+Rx(ca-trustpoint)# rsakeypair myRSAKeys
+\end{configbox}
+
+Then the CA certificate was downloaded and the router's own certificate was 
+requested:
+
+\begin{configbox}
+Rx(config)# crypto pki authenticate GETVPN_CA
+Rx(config)# crypto pki enroll GETVPN_CA
+\end{configbox}
+
+The \texttt{authenticate} command downloads the CA's self-signed certificate 
+so the router can verify signatures from the CA. The \texttt{enroll} command 
+generates a Certificate Signing Request (CSR) and submits it to the CA, which 
+automatically issues a signed certificate in return.
+
+\subsubsection{Enrollment Traffic Analysis}
+
+The enrollment process was captured with a Wireshark probe on the CA-switch 
+link. Figures~\ref{fig:wireshark_auth} and \ref{fig:wireshark_enroll} show 
+the captured traffic for R1's authentication and enrollment respectively.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.05\linewidth]{../Images/wireshark authenticate R1 CA.png}
+    \caption{Wireshark capture of R1's \texttt{crypto pki authenticate} 
+    exchange. R1 opens a TCP connection to the CA on port 80 and retrieves 
+    the CA certificate over HTTP.}
+    \label{fig:wireshark_auth}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.05\linewidth]{../Images/wireshark enroll R1 CA.png}
+    \caption{Wireshark capture of R1's \texttt{crypto pki enroll} exchange. 
+    R1 submits its CSR via HTTP POST and receives the signed certificate 
+    in the CA's response.}
+    \label{fig:wireshark_enroll}
+\end{figure}
+
+The authentication exchange consists of two HTTP GET requests: the first 
+retrieves the CA certificate (\texttt{operation=GetCACert}), and the second 
+retrieves the CA capabilities (\texttt{operation=GetCACaps}). The CA responds 
+with content type \texttt{application/x-x509-ca-cert}, delivering its 
+certificate to R1. Figures~\ref{fig:pkt55} and \ref{fig:pkt58} show these 
+packets expanded.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.05\linewidth]{../Images/content packet 55 auth.png}
+    \caption{HTTP GET request from R1 to the CA: 
+    \texttt{operation=GetCACert\&message=GETVPN\_CA}.}
+    \label{fig:pkt55}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.05\linewidth]{../Images/content packet 58 auth.png}
+    \caption{CA response delivering its certificate: 
+    \texttt{200 OK (application/x-x509-ca-cert)}.}
+    \label{fig:pkt58}
+\end{figure}
+
+The enrollment exchange uses a single HTTP GET carrying the base64-encoded CSR 
+as the \texttt{message} parameter (\texttt{operation=PKIOperation}). The CA 
+processes the request automatically due to \texttt{grant auto} and responds 
+with the signed certificate as content type \texttt{application/x-pki-message}. 
+Figures~\ref{fig:pkt182} and \ref{fig:pkt189} show these packets.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.05\linewidth]{../Images/content packet 182 enr.png}
+    \caption{HTTP GET from R1 carrying the base64-encoded CSR (\texttt{operation=PKIOperation}).}
+    \label{fig:pkt182}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.05\linewidth]{../Images/content packet 189 enr.png}
+    \caption{CA response delivering the signed certificate: \texttt{200 OK (application/x-pki-message)}.}
+    \label{fig:pkt189}
+\end{figure}
+
+\subsubsection{Certificate Verification}
+
+Figure~\ref{fig:pki_authenticate_r1} shows the \texttt{crypto pki authenticate} 
+process on R1, where the CA certificate fingerprint is displayed and accepted. 
+This fingerprint matches the one shown in \texttt{show crypto pki server} on 
+the CA, confirming the correct certificate was retrieved.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/crypto pki authenticate GETVPN_CA R1.png}
+    \caption{\texttt{crypto pki authenticate GETVPN\_CA} on R1. The CA 
+    certificate fingerprint is displayed for verification before acceptance.}
+    \label{fig:pki_authenticate_r1}
+\end{figure}
+
+Figures~\ref{fig:pki_certs_r1} and \ref{fig:pki_certs_r5} show the installed 
+certificates on R1 and R5 respectively after enrollment. Each router has two 
+certificates: its own signed certificate (serial 02 for R1, serial 03 for R5) 
+and the CA certificate (serial 01), both issued by \texttt{cn=GETVPN\_CA, 
+ou=lab, o=ist} and valid for one year.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/crypto pki certificates R1.png}
+    \caption{\texttt{show crypto pki certificates} on R1. Router certificate 
+    (serial 02) and CA certificate (serial 01) both available.}
+    \label{fig:pki_certs_r1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{../Images/crypto pki certificates R5.png}
+    \caption{\texttt{show crypto pki certificates} on R5. Router certificate 
+    (serial 03) and CA certificate (serial 01) both available.}
+    \label{fig:pki_certs_r5}
+\end{figure}
+
+\subsection{IOS Version Limitation}
+
+With all routers enrolled and valid certificates in place, the next step was 
+to update the GDOI rekey authentication on R1 and R5 to use certificate-based 
+signing instead of the \texttt{mypubkey rsa} method. The intended command was:
+
+\begin{configbox}
+R1(gkm-local-server)# rekey authentication certificate GETVPN_CA
+\end{configbox}
+
+However, as shown in Figure~\ref{fig:rekey_cert_unsupported}, this command 
+was rejected by the router. Querying the available options confirmed that only 
+\texttt{mypubkey} is supported under \texttt{rekey authentication} on this 
+platform:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../Images/rekey_auth_certificate_unsupported.png}
+    \caption{\texttt{rekey authentication certificate} rejected on IOS 
+    15.7(3)M3. Only \texttt{mypubkey} is available, confirming that 
+    certificate-based rekey signing is not supported on this IOS version.}
+    \label{fig:rekey_cert_unsupported}
+\end{figure}
+
+The \texttt{rekey authentication certificate} command requires a more recent 
+IOS version than 15.7(3)M3 used in this lab. Despite this, the PKI 
+infrastructure was successfully deployed: the CA server is operational, all 
+routers hold valid CA-signed certificates, and the SCEP enrollment process was 
+verified end-to-end. The limitation is specific to the GDOI rekey signing 
+integration with the trustpoint — the PKI layer itself functions correctly. In 
+a production environment running a supported IOS version, the final step would 
+be to replace \texttt{mypubkey rsa myRSAKeys} with 
+\texttt{certificate GETVPN\_CA} on both KSs, after which GMs would trust rekey 
+messages signed by any router holding a certificate from \texttt{GETVPN\_CA}, 
+enabling fully transparent COOP failover without per-KS key distribution.
+
 % ======================================================================
 \section{Conclusion}
 % ======================================================================
@@ -1007,5 +1248,16 @@ from R1, confirming exchange type 33 and the direction R1 $\rightarrow$ GM.
 %   - The significance of the shared TEK (same SPI on all GMs).
 %   - Observations from the rekey process.
 %   - Summary of any extensions implemented and what they add.
+
+\begin{thebibliography}{9}
+
+\bibitem{cisco_coop}
+Cisco Systems,
+\textit{Configure GETVPN with COOP Key Servers},
+Cisco Technical Documentation,
+Available at: \url{https://www.cisco.com/c/en/us/support/docs/routers/asr-1000-series-aggregation-services-routers/225161-configure-getvpn-with-coop-key-servers.html}
+[Accessed: June 2026]
+
+\end{thebibliography}
 
 \end{document}
