@@ -43,3 +43,7 @@
 \contentsline {subsubsection}{\numberline {7.3.2}Certificate Verification}{40}{subsubsection.7.3.2}%
 \contentsline {subsection}{\numberline {7.4}IOS Version Limitation}{42}{subsection.7.4}%
 \contentsline {section}{\numberline {8}Conclusion}{43}{section.8}%
+\contentsline {paragraph}{Base configuration of GETVPN}{43}{section.8}%
+\contentsline {paragraph}{COOP Redundancy Extension}{43}{section.8}%
+\contentsline {paragraph}{COOP with CA Server extension}{44}{section.8}%
+\contentsline {paragraph}{Overall}{44}{section.8}%

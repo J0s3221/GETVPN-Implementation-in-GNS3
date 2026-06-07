@@ -1186,7 +1186,7 @@ ou=lab, o=ist} and valid for one year.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\linewidth]{../Images/crypto pki certificates R1.png}
+    \includegraphics[width=0.75\linewidth]{../Images/crypto pki certificates R1.png}
     \caption{\texttt{show crypto pki certificates} on R1. Router certificate 
     (serial 02) and CA certificate (serial 01) both available.}
     \label{fig:pki_certs_r1}
@@ -1194,7 +1194,7 @@ ou=lab, o=ist} and valid for one year.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\linewidth]{../Images/crypto pki certificates R5.png}
+    \includegraphics[width=0.75\linewidth]{../Images/crypto pki certificates R5.png}
     \caption{\texttt{show crypto pki certificates} on R5. Router certificate 
     (serial 03) and CA certificate (serial 01) both available.}
     \label{fig:pki_certs_r5}
@@ -1217,7 +1217,7 @@ platform:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\linewidth]{../Images/rekey_auth_certificate_unsupported.png}
+    \includegraphics[width=0.95\linewidth]{../Images/rekey_auth_certificate_unsupported.png}
     \caption{\texttt{rekey authentication certificate} rejected on IOS 
     15.7(3)M3. Only \texttt{mypubkey} is available, confirming that 
     certificate-based rekey signing is not supported on this IOS version.}
@@ -1240,14 +1240,72 @@ enabling fully transparent COOP failover without per-KS key distribution.
 \section{Conclusion}
 % ======================================================================
 
-% TODO: Write after completing all tasks and extensions.
-%
-% Points to cover:
-%   - What GETVPN offers over traditional point-to-point IPSec VPNs.
-%   - The role of GDOI and the two-phase registration process.
-%   - The significance of the shared TEK (same SPI on all GMs).
-%   - Observations from the rekey process.
-%   - Summary of any extensions implemented and what they add.
+This project deployed and studied a complete GETVPN solution in a GNS3 
+simulation environment, covering the full lifecycle from initial configuration 
+through protocol analysis, traffic verification, and redundancy extensions.
+
+\paragraph{Base configuration of GETVPN}
+
+The base GETVPN configuration was successfully implemented with R1 as the Key 
+Server and R2, R3, and R4 as Group Members. The GDOI registration process was 
+analysed in detail through Wireshark captures, confirming the two-phase 
+exchange: IKE Phase 1 establishes a mutually authenticated channel between each 
+GM and the KS, followed by the GROUPKEY-PULL exchange in which the GM receives 
+the group keys and IPSec policy. The Domain of Interpretation field 
+(\texttt{GDOI = 2}) distinguishes this from standard IPSec negotiations. The 
+shared TEK was verified both in Wireshark captures and through CLI commands on 
+all three GMs, confirming that every GM holds an identical SPI regardless of 
+traffic destination — the defining characteristic of GETVPN's group key model. 
+The TEK rekey process was observed by reducing the SA lifetime to 900 seconds 
+and triggering a manual rekey, revealing the New Group Mode exchange (type 33) 
+used to push refreshed key material from the KS to GMs.
+
+\paragraph{COOP Redundancy Extension}
+
+The COOP redundancy extension was implemented with R5 as a Secondary Key 
+Server. The control plane behaviour was verified successfully: R5 correctly 
+detected R1's failure through missed heartbeat announcements and promoted itself 
+to Primary within 30 seconds, as confirmed by console log messages and the 
+COOP status output. The failover investigation revealed a configuration omission 
+— GMs require a pre-shared key entry for every KS address they may need to 
+authenticate with, not just the Primary. Once corrected, the full COOP lifecycle 
+was demonstrated: normal operation with R1 as Primary, clean failover to R5 
+with GMs re-registering and traffic continuing uninterrupted, and recovery with 
+R1 reclaiming the Primary role upon returning to service. The Wireshark captures 
+at each stage provided a clear view of the COOP announcement mechanism, the New 
+Group Mode rekey distribution, and the IKE re-registration exchanges.
+
+\paragraph{COOP with CA Server extension}
+
+The PKI extension was partially implemented. A fully functional IOS Certificate 
+Authority was deployed, and all routers — both Key Servers and all Group Members 
+— were successfully enrolled, each receiving a CA-signed certificate. The SCEP 
+enrollment process was verified through Wireshark captures showing the HTTP 
+certificate request and delivery exchanges. The intended final step — replacing 
+RSA key-based rekey authentication with certificate-based signing using 
+\texttt{rekey authentication certificate} — was blocked by a limitation of IOS 
+version 15.7(3)M3, which does not expose this command under the GDOI 
+configuration context.
+
+It is worth noting that the lab guide lists certificate-based authentication as 
+a recommended extension, which suggests that a working implementation is 
+achievable on appropriate hardware or a different IOS version. With additional 
+time it is reasonable to expect that the complete solution could be realised: the PKI 
+infrastructure is already in place, the enrollment process works correctly, and 
+the only missing piece is the GDOI integration command. The investigation into 
+this limitation was itself informative, requiring a systematic diagnosis through 
+debug output and command exploration that deepened the understanding of both 
+the GETVPN architecture and the IKE authentication model.
+
+\paragraph{Overall}
+
+This project demonstrated the core strengths of GETVPN — scalable 
+any-to-any encryption with header preservation, centralised key management, and 
+group-wide policy distribution — as well as the practical considerations that 
+arise when deploying it in a redundant configuration. The combination of 
+protocol-level analysis through Wireshark, CLI verification, and hands-on 
+troubleshooting provided a thorough understanding of how GETVPN operates across 
+its full range of normal and failure scenarios.
 
 \begin{thebibliography}{9}
 
@@ -1256,7 +1314,11 @@ Cisco Systems,
 \textit{Configure GETVPN with COOP Key Servers},
 Cisco Technical Documentation,
 Available at: \url{https://www.cisco.com/c/en/us/support/docs/routers/asr-1000-series-aggregation-services-routers/225161-configure-getvpn-with-coop-key-servers.html}
-[Accessed: June 2026]
+
+\bibitem{article_getvpn}
+Amolak Networks,
+\textit{Cisco Group Encrypted Transport VPN -- GET VPN},
+Available at: \url{https://www.amolak.net/getvpn/}
 
 \end{thebibliography}
 
