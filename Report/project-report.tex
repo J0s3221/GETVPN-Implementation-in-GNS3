@@ -327,9 +327,17 @@ Several important aspects of GETVPN operation are visible in the output from Fig
     \item \textbf{Registration status}: R2 shows \texttt{Registration status: Registered}, confirming it successfully joined the group.
     \item \textbf{ACL received from KS}: The traffic selector (\texttt{permit icmp any any}) was pushed by the KS and installed on R2 as \texttt{gdoi\_group\_myGDOIGroup\_temp\_acl}. GMs do not define this locally.
     \item \textbf{TEK policy}: The Traffic Encryption Key policy shows \texttt{transform:esp-aes esp-sha-hmac} and SPI \texttt{0x6D2F03B9}, with a remaining lifetime of 3478 seconds. This is the key used to encrypt ICMP traffic between GMs.
-    \item \textbf{KEK policy}: The Key Encryption Key uses 3DES with a lifetime of 86276 seconds and is used to protect future rekey messages from the KS. Notably, the KEK uses 3DES regardless of the AES algorithm specified in the IKE policy; this is a known behaviour in the IOS version used.
+    \item \textbf{KEK policy:} The Key Encryption Key uses 3DES with a lifetime of 86276 seconds and is used to protect future rekey messages from the KS. The use of 3DES here is independent of the AES algorithm specified in the IKE Phase 1 policy: the KEK parameters are negotiated separately during the GROUPKEY-PULL exchange and default to 3DES on this IOS version regardless of the IKE policy configuration.
     \item \textbf{Active TEK Number: 1}: Confirms one TEK is active and ready to encrypt matching traffic.
 \end{itemize}
+
+Taken together, the \texttt{show} command outputs reveal the most important aspects of 
+GETVPN operation: the KS has full visibility over registered members and their rekey 
+state; GMs receive all security policy centrally from the KS and do not define it 
+locally; the TEK and KEK serve distinct roles with deliberately different lifetimes; 
+and the traffic selector ACL is pushed by the KS and installed automatically on each 
+GM, ensuring consistent policy enforcement across the group without per-device 
+configuration.
 
 \begin{figure}[H]
     \centering
@@ -350,8 +358,15 @@ Several important aspects of GETVPN operation are visible in the output from Fig
 \section{Lab Tasks}
 % ======================================================================
 
+The following subsections address the lab tasks defined in the assignment. 
+Task~1 (IKE and GROUPKEY-PULL analysis) is covered in Section~\ref{sec:ike}; 
+Task~2 (show command analysis) was addressed in Section~4; 
+Task~3 (SPI consistency) is covered in Section~\ref{sec:spi}; 
+and Task~4 (TEK rekey observation) is covered in Section~\ref{sec:rekey}.
+
 % --- Task 1 ---
 \subsection{IKE and GROUPKEY-PULL Analysis}
+\label{sec:ike}
 
 To capture the GDOI registration exchanges, a Wireshark probe was placed on the 
 link between the Key Server (R1) and the central switch before any Group Member 
@@ -476,6 +491,7 @@ any GM to decrypt traffic encrypted by any other GM.
 \end{figure}
 
 \subsection{SPI Consistency Across Group Members}
+\label{sec:spi}
 
 A fundamental property of GETVPN is that all Group Members share a single 
 Traffic Encryption Key (TEK), meaning all encrypted traffic within the group 
@@ -496,8 +512,7 @@ individual packet confirms \texttt{ESP SPI: 0x24ff23b1 (620700593)}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\linewidth]{../Images/ping esp pc2.png}
-    \caption{ESP packets captured for PC1 $\rightarrow$ PC2 ping. All packets 
-    carry \texttt{SPI=0x24FF23B1}.}
+    \caption{ESP packets captured for PC1 $\rightarrow$ PC2 ping. All packets carry \texttt{SPI=0x24FF23B1}.}
     \label{fig:esp_pc2}
 \end{figure}
 
@@ -568,7 +583,14 @@ is because the TEK has a lifetime of 3600 seconds and was refreshed between
 the two observations. The rekey process — in which the KS distributes a new 
 TEK to all GMs before the old one expires — is examined in the following task.
 
+It is worth noting that the SPI observed here (\texttt{0x24FF23B1}) differs from the 
+one seen during the initial verification in Section~4.2 (\texttt{0x6D2F03B9}). This is 
+because the TEK has a lifetime of 3600 seconds and was refreshed between the two 
+observations; both captures are therefore consistent with correct GETVPN behaviour, 
+simply taken at different points in the TEK lifecycle.
+
 \subsection{TEK Rekey Observation}
+\label{sec:rekey}
 
 To observe the TEK refresh process, the IPSec SA lifetime on the Key Server was 
 reduced to 900 seconds by adding the following command to the IPSec profile:
@@ -789,7 +811,7 @@ contact it if the Primary becomes unavailable.
     \label{fig:coop_gm_steady}
 \end{figure}
 
-\subsection{Failover Test -- First Attempt and Diagnosis}
+\subsection{Failover Analysis and Root Cause Diagnosis}
 
 To test the failover behaviour, R1's \texttt{gi0/0} interface was shut down 
 while Wireshark probes captured traffic on both the R1-switch and R5-switch 

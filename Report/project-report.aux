@@ -45,6 +45,7 @@
 \newlabel{fig:gm_gdoi}{{4}{11}{\texttt {show crypto gdoi} on R2. Registration confirmed; TEK and KEK policies downloaded from KS.\relax }{figure.caption.5}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Lab Tasks}{12}{section.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}IKE and GROUPKEY-PULL Analysis}{12}{subsection.5.1}\protected@file@percent }
+\newlabel{sec:ike}{{5.1}{12}{IKE and GROUPKEY-PULL Analysis}{subsection.5.1}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Capture filtered on UDP port 848 before applying the ISAKMP decoder.\relax }}{12}{figure.caption.6}\protected@file@percent }
 \newlabel{fig:udp848raw}{{5}{12}{Capture filtered on UDP port 848 before applying the ISAKMP decoder.\relax }{figure.caption.6}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Capture filtered on UDP port 848 after applying the ISAKMP decoder.\relax }}{13}{figure.caption.7}\protected@file@percent }
@@ -64,6 +65,7 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces 10-message registration sequence for R4.\relax }}{16}{figure.caption.12}\protected@file@percent }
 \newlabel{fig:r4_isakmp}{{11}{16}{10-message registration sequence for R4.\relax }{figure.caption.12}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2}SPI Consistency Across Group Members}{16}{subsection.5.2}\protected@file@percent }
+\newlabel{sec:spi}{{5.2}{16}{SPI Consistency Across Group Members}{subsection.5.2}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.1}Wireshark Capture}{17}{subsubsection.5.2.1}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces ESP packets captured for PC1 $\rightarrow $ PC2 ping. All packets carry \texttt  {SPI=0x24FF23B1}.\relax }}{17}{figure.caption.13}\protected@file@percent }
 \newlabel{fig:esp_pc2}{{12}{17}{ESP packets captured for PC1 $\rightarrow $ PC2 ping. All packets carry \texttt {SPI=0x24FF23B1}.\relax }{figure.caption.13}{}}
@@ -78,6 +80,7 @@
 \newlabel{fig:ks_policy}{{15}{19}{\texttt {show crypto gdoi ks policy} on R1 confirming the TEK SPI and policy distributed to all GMs.\relax }{figure.caption.16}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.3}Why All SPIs Are Identical}{19}{subsubsection.5.2.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.3}TEK Rekey Observation}{19}{subsection.5.3}\protected@file@percent }
+\newlabel{sec:rekey}{{5.3}{19}{TEK Rekey Observation}{subsection.5.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Output of the command \texttt  {crypto gdoi ks rekey} in R1\relax }}{20}{figure.caption.17}\protected@file@percent }
 \newlabel{fig:forcerekey}{{16}{20}{Output of the command \texttt {crypto gdoi ks rekey} in R1\relax }{figure.caption.17}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces \texttt  {show crypto gdoi} on R1 showing the 900 second TEK lifetime in effect after to the manual rekey.\relax }}{20}{figure.caption.18}\protected@file@percent }
@@ -104,7 +107,7 @@
 \newlabel{fig:coop_r5}{{22}{25}{\texttt {show crypto gdoi ks coop} on R5. Secondary role confirmed, R1 visible as Primary peer.\relax }{figure.caption.23}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces \texttt  {show crypto gdoi} on R4 under normal COOP operation. Registered with R1 as Primary, both KS addresses present in the server list, TEK active.\relax }}{26}{figure.caption.24}\protected@file@percent }
 \newlabel{fig:coop_gm_steady}{{23}{26}{\texttt {show crypto gdoi} on R4 under normal COOP operation. Registered with R1 as Primary, both KS addresses present in the server list, TEK active.\relax }{figure.caption.24}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Failover Test -- First Attempt and Diagnosis}{27}{subsection.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Failover Analysis and Root Cause Diagnosis}{27}{subsection.6.2}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {24}{\ignorespaces R5 console at the moment of failover. R1 is declared unreachable and R5 transitions to Primary.\relax }}{27}{figure.caption.25}\protected@file@percent }
 \newlabel{fig:coop_failover_console}{{24}{27}{R5 console at the moment of failover. R1 is declared unreachable and R5 transitions to Primary.\relax }{figure.caption.25}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {25}{\ignorespaces \texttt  {show crypto gdoi ks coop} on R5 after R1 failure. R5 has assumed the Primary role.\relax }}{27}{figure.caption.26}\protected@file@percent }

@@ -31,7 +31,7 @@
 \contentsline {subsubsection}{\numberline {6.1.1}Overview}{22}{subsubsection.6.1.1}%
 \contentsline {subsubsection}{\numberline {6.1.2}COOP Configuration}{23}{subsubsection.6.1.2}%
 \contentsline {subsubsection}{\numberline {6.1.3}Steady-State Verification}{24}{subsubsection.6.1.3}%
-\contentsline {subsection}{\numberline {6.2}Failover Test -- First Attempt and Diagnosis}{27}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.2}Failover Analysis and Root Cause Diagnosis}{27}{subsection.6.2}%
 \contentsline {subsubsection}{\numberline {6.2.1}Root Cause Diagnosis}{29}{subsubsection.6.2.1}%
 \contentsline {subsection}{\numberline {6.3}Clean Failover Verification}{31}{subsection.6.3}%
 \contentsline {subsection}{\numberline {6.4}Recovery -- R1 Returning as Primary}{34}{subsection.6.4}%
